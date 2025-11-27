@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 interface Command {
   input: string;
@@ -11,6 +11,218 @@ interface Command {
 interface ConsoleProps {
   initialCommands?: string[];
 }
+
+// Animation components defined outside Console to prevent recreation on each render
+const hackAnimationLines = new Map<string, string[]>();
+
+const MatrixAnimation: React.FC<{ onScroll?: () => void }> = React.memo(({ onScroll }) => {
+  const [columns, setColumns] = useState<Array<{ chars: string[]; speed: number; delay: number }>>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const hasInitializedRef = useRef(false);
+
+  useEffect(() => {
+    if (hasInitializedRef.current) return;
+    hasInitializedRef.current = true;
+    
+    if (!containerRef.current) return;
+    
+    const width = containerRef.current.offsetWidth || 800;
+    const columnCount = Math.floor(width / 20);
+    const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()[]{}|\\/<>?~`';
+    
+    const newColumns = Array.from({ length: columnCount }, (_, i) => {
+      const columnLength = Math.floor(Math.random() * 20) + 15;
+      const columnChars = Array.from({ length: columnLength }, () => 
+        chars[Math.floor(Math.random() * chars.length)]
+      );
+      return { 
+        chars: columnChars, 
+        speed: Math.random() * 2000 + 1000,
+        delay: i * 100
+      };
+    });
+    
+    setColumns(newColumns);
+    if (onScroll) {
+      setTimeout(() => onScroll(), 100);
+    }
+  }, [onScroll]);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '300px',
+        overflow: 'hidden',
+        fontFamily: 'monospace',
+        fontSize: '14px',
+        lineHeight: '1.2',
+      }}
+    >
+      {columns.map((column, colIndex) => (
+        <div
+          key={colIndex}
+          style={{
+            position: 'absolute',
+            left: `${colIndex * 20}px`,
+            top: '-100%',
+            color: '#00ff00',
+            textShadow: '0 0 5px #00ff00',
+            animation: `matrix-fall ${column.speed}ms linear infinite`,
+            animationDelay: `${column.delay}ms`,
+          }}
+        >
+          {column.chars.map((char, charIndex) => (
+            <div
+              key={charIndex}
+              style={{
+                opacity: charIndex === 0 ? 1 : Math.max(0.2, 1 - (charIndex / column.chars.length) * 0.8),
+                color: charIndex === 0 ? '#ffffff' : '#00ff00',
+              }}
+            >
+              {char}
+            </div>
+          ))}
+        </div>
+      ))}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes matrix-fall {
+          0% {
+            transform: translateY(-100%);
+          }
+          100% {
+            transform: translateY(400px);
+          }
+        }
+      `}} />
+    </div>
+  );
+});
+MatrixAnimation.displayName = 'MatrixAnimation';
+
+const HackAnimation: React.FC<{ animationKey: string; onScroll?: () => void }> = React.memo(({ animationKey, onScroll }) => {
+  const [lines, setLines] = useState<string[]>(() => hackAnimationLines.get(animationKey) || []);
+  const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
+  const hasStartedRef = useRef(false);
+
+  useEffect(() => {
+    if (hasStartedRef.current || lines.length > 0) {
+      return;
+    }
+    
+    hasStartedRef.current = true;
+    let currentLines = lines;
+
+    const hackLines = [
+      '[>] Initializing hack sequence...',
+      '[>] Bypassing security protocols...',
+      '[>] Accessing mainframe...',
+      '[>] Decrypting data streams...',
+      '[>] Injecting payload...',
+      '[>] Establishing connection...',
+      '[>] Scanning for vulnerabilities...',
+      '[>] Exploiting buffer overflow...',
+      '[>] Gaining root access...',
+      '[>] Extracting sensitive data...',
+      '[>] Covering tracks...',
+      '[>] Mission complete.',
+      '',
+      'Just kidding! 😄',
+      'This is a harmless animation.',
+      'I\'m a legitimate developer, not a hacker!',
+      '',
+      'But I do know cybersecurity and can help secure your systems. 💻'
+    ];
+
+    let currentLine = 0;
+    
+    const addNextLine = () => {
+      if (currentLine < hackLines.length) {
+        const delay = Math.random() * 400 + 400;
+        
+        const timeout = setTimeout(() => {
+          const newLines = [...currentLines, hackLines[currentLine]];
+          currentLines = newLines;
+          setLines(newLines);
+          hackAnimationLines.set(animationKey, newLines);
+          currentLine++;
+          
+          if (onScroll) {
+            setTimeout(() => onScroll(), 100);
+          }
+          
+          if (currentLine < hackLines.length) {
+            addNextLine();
+          }
+        }, delay);
+        
+        timeoutRefs.current.push(timeout);
+      }
+    };
+
+    setTimeout(() => addNextLine(), 100);
+    
+    return () => {
+      timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
+      timeoutRefs.current = [];
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animationKey, onScroll]);
+
+  return (
+    <div style={{ fontFamily: 'monospace', fontSize: '12px', lineHeight: '1.4' }}>
+      {lines.map((line, index) => {
+        if (!line) return null;
+        return (
+          <div
+            key={index}
+            style={{
+              color: '#00ff00',
+              textShadow: '0 0 5px #00ff00',
+              marginBottom: '1px',
+              opacity: 1,
+              animation: line.includes('Just kidding') ? 'none' : 'fadeIn 0.2s ease-in',
+            }}
+          >
+            {line}
+          </div>
+        );
+      })}
+      {lines.length > 0 && lines.length < 18 && (
+        <span
+          style={{
+            animation: 'blink 0.8s infinite',
+            color: '#00ff00',
+            textShadow: '0 0 5px #00ff00',
+          }}
+        >
+          █
+        </span>
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        @keyframes blink {
+          0%, 50% {
+            opacity: 1;
+          }
+          51%, 100% {
+            opacity: 0;
+          }
+        }
+      `}} />
+    </div>
+  );
+});
+HackAnimation.displayName = 'HackAnimation';
 
 const Console: React.FC<ConsoleProps> = ({ initialCommands = [] }) => {
   const [commands, setCommands] = useState<Command[]>([]);
@@ -446,6 +658,10 @@ intro/welcome         - Show welcome message
 clear                 - Clear the console
 help                  - Show this help message
 
+FUN COMMANDS:
+matrix                - Matrix-style animation effect
+hack                  - Simulated hacking animation
+
 EXAMPLES:
 $ cat about.txt
 $ ls
@@ -547,7 +763,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.0.4\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.0.5\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -557,7 +773,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `OS: Portfolio Console v1.0.4
+        return `OS: Portfolio Console v1.0.5
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -596,6 +812,12 @@ Follow me for updates on my latest projects and tech insights!`;
 └── [FILE] README.md
 
 0 directories, 7 files`;
+      
+      case 'matrix':
+        return 'MATRIX_ANIMATION'; // Special marker for animation
+      
+      case 'hack':
+        return 'HACK_ANIMATION'; // Special marker for animation
       
       case '':
         return '';
@@ -646,8 +868,21 @@ Follow me for updates on my latest projects and tech insights!`;
     setCurrentInput('');
     setHistoryIndex(-1);
 
-    // Use typing animation for better UX
-    await addTypingCommand(input, output, 15);
+    // Skip typing animation for special animations
+    if (output === 'MATRIX_ANIMATION' || output === 'HACK_ANIMATION') {
+      const newCommand: Command = {
+        input: input,
+        output: output,
+        timestamp: new Date(),
+        isTyping: false,
+      };
+      setCommands(prev => [...prev, newCommand]);
+      // Scroll to bottom after adding animation command
+      setTimeout(() => scrollToBottom(), 100);
+    } else {
+      // Use typing animation for better UX
+      await addTypingCommand(input, output, 15);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -681,15 +916,28 @@ Follow me for updates on my latest projects and tech insights!`;
     setIsTyping(false);
   };
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     if (contentRef.current) {
       contentRef.current.scrollTop = contentRef.current.scrollHeight;
     }
-  };
+  }, []);
 
   const handleFileClick = async (filename: string) => {
     const output = executeCommand(`cat ${filename}`, commands);
-    await addTypingCommand(`cat ${filename}`, output, 15);
+    // Skip typing animation for special animations
+    if (output === 'MATRIX_ANIMATION' || output === 'HACK_ANIMATION') {
+      const newCommand: Command = {
+        input: `cat ${filename}`,
+        output: output,
+        timestamp: new Date(),
+        isTyping: false,
+      };
+      setCommands(prev => [...prev, newCommand]);
+      // Scroll to bottom after adding animation command
+      setTimeout(() => scrollToBottom(), 100);
+    } else {
+      await addTypingCommand(`cat ${filename}`, output, 15);
+    }
   };
 
   const addTypingCommand = async (input: string, output: string, speed: number = 20) => {
@@ -938,7 +1186,19 @@ Follow me for updates on my latest projects and tech insights!`;
         for (const cmd of initialCommands) {
           await new Promise(resolve => setTimeout(resolve, 1000));
           const output = executeCommand(cmd, []);
-          await addTypingCommand(cmd, output, 20);
+          // Skip typing animation for special animations
+          if (output === 'MATRIX_ANIMATION' || output === 'HACK_ANIMATION') {
+            const newCommand: Command = {
+              input: cmd,
+              output: output,
+              timestamp: new Date(),
+              isTyping: false,
+            };
+            setCommands(prev => [...prev, newCommand]);
+            setTimeout(() => scrollToBottom(), 100);
+          } else {
+            await addTypingCommand(cmd, output, 20);
+          }
         }
       };
       runInitialCommands();
@@ -990,7 +1250,7 @@ Follow me for updates on my latest projects and tech insights!`;
           opacity: 0.9,
           textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
         }}>
-          INTERACTIVE PORTFOLIO CONSOLE v1.0.4
+          INTERACTIVE PORTFOLIO CONSOLE v1.0.5
         </div>
         <div style={{ 
           fontSize: '8px', 
@@ -1012,7 +1272,7 @@ Follow me for updates on my latest projects and tech insights!`;
           paddingRight: '5px'
         }}>
         {commands.map((command, index) => (
-          <div key={index} style={{ marginBottom: '10px' }}>
+          <div key={`${command.timestamp.getTime()}-${command.input}-${index}`} style={{ marginBottom: '10px' }}>
             <div className="command-line" style={{
               display: 'flex',
               alignItems: 'center',
@@ -1096,6 +1356,10 @@ Follow me for updates on my latest projects and tech insights!`;
                       }}>█</span>
                     )}
                   </div>
+                ) : command.output === 'MATRIX_ANIMATION' ? (
+                  <MatrixAnimation onScroll={scrollToBottom} />
+                ) : command.output === 'HACK_ANIMATION' ? (
+                  <HackAnimation animationKey={`${command.timestamp.getTime()}-${command.input}`} onScroll={scrollToBottom} />
                 ) : (
                   <>
                     {command.output.split('\n').map((line, lineIndex, lines) => (
