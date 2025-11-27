@@ -545,7 +545,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.0.2\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.0.3\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -555,7 +555,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `OS: Portfolio Console v1.0.2
+        return `OS: Portfolio Console v1.0.3
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -698,22 +698,61 @@ Follow me for updates on my latest projects and tech insights!`;
         await new Promise(resolve => setTimeout(resolve, speed * 3)); // Slower for ls
       }
     } else {
-      // Regular typing for other commands
+      // Adaptive typing based on content length
+      const contentLength = output.length;
       let typedOutput = '';
-      for (let i = 0; i < output.length; i++) {
-        typedOutput += output[i];
-        setCommands(prev => 
-          prev.map((cmd, index) => 
-            index === prev.length - 1 
-              ? { ...cmd, output: typedOutput, isTyping: i < output.length - 1 }
-              : cmd
-          )
-        );
-        
-        // Scroll to bottom during typing
-        setTimeout(() => scrollToBottom(), 0);
-        
-        await new Promise(resolve => setTimeout(resolve, speed));
+      
+      // For very long content (>2000 chars), type by words/lines for speed
+      // For medium content (500-2000 chars), type faster character by character
+      // For short content (<500 chars), use normal character-by-character typing
+      
+      if (contentLength > 2000) {
+        // Type by lines for very long content
+        const lines = output.split('\n');
+        for (let i = 0; i < lines.length; i++) {
+          typedOutput += lines[i] + (i < lines.length - 1 ? '\n' : '');
+          setCommands(prev => 
+            prev.map((cmd, index) => 
+              index === prev.length - 1 
+                ? { ...cmd, output: typedOutput, isTyping: i < lines.length - 1 }
+                : cmd
+            )
+          );
+          setTimeout(() => scrollToBottom(), 0);
+          // Fast line-by-line typing (5-10ms per line)
+          await new Promise(resolve => setTimeout(resolve, Math.max(5, 10 - Math.floor(i / 50))));
+        }
+      } else if (contentLength > 500) {
+        // Type by chunks (words) for medium content
+        const words = output.split(/(\s+)/);
+        for (let i = 0; i < words.length; i++) {
+          typedOutput += words[i];
+          setCommands(prev => 
+            prev.map((cmd, index) => 
+              index === prev.length - 1 
+                ? { ...cmd, output: typedOutput, isTyping: i < words.length - 1 }
+                : cmd
+            )
+          );
+          setTimeout(() => scrollToBottom(), 0);
+          // Adaptive speed: faster for longer content
+          const adaptiveSpeed = Math.max(1, Math.floor(speed * (500 / contentLength)));
+          await new Promise(resolve => setTimeout(resolve, adaptiveSpeed));
+        }
+      } else {
+        // Character-by-character for short content (original behavior)
+        for (let i = 0; i < output.length; i++) {
+          typedOutput += output[i];
+          setCommands(prev => 
+            prev.map((cmd, index) => 
+              index === prev.length - 1 
+                ? { ...cmd, output: typedOutput, isTyping: i < output.length - 1 }
+                : cmd
+            )
+          );
+          setTimeout(() => scrollToBottom(), 0);
+          await new Promise(resolve => setTimeout(resolve, speed));
+        }
       }
     }
     
@@ -863,7 +902,7 @@ Follow me for updates on my latest projects and tech insights!`;
           opacity: 0.9,
           textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
         }}>
-          INTERACTIVE PORTFOLIO CONSOLE v1.0.2
+          INTERACTIVE PORTFOLIO CONSOLE v1.0.3
         </div>
         <div style={{ 
           fontSize: '8px', 
