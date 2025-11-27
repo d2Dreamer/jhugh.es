@@ -25,186 +25,323 @@ const Console: React.FC<ConsoleProps> = ({ initialCommands = [] }) => {
   const [typingCommands, setTypingCommands] = useState<Command[]>([]);
 
   const fileSystem = {
-    'about.txt': `JOSEPH HUGHES - FULL STACK DEVELOPER
-====================================
+    'about.txt': `JOSEPH HUGHES - SENIOR SOFTWARE ENGINEER
+===========================================
 
-Hello! I'm Joseph Hughes, a passionate Full Stack Developer with expertise in modern web technologies.
+Hello! I'm Joseph Hughes, a UK-based Senior Software Engineer and Blockchain Specialist with 11+ years of experience in blockchain technologies.
 
 EXPERIENCE:
-- 5+ years in full-stack development
-- Specialized in React, Node.js, and cloud technologies
-- Experience with Web3 and blockchain development
-- Led development teams and managed technical projects
+- 11+ years in blockchain and Web3 development
+- Specialized in smart contracts, DeFi protocols, and Web3 applications
+- Led technical teams and delivered solutions with 140,000+ monthly active users
+- Secured $650,000 in pre-seed funding for TowneSquare
+- Involved in the Cryptosphere since 2013
 
-CURRENT ROLE:
-- CTO at Townesquare (Web3 Social Media Platform)
-- Building innovative solutions for the decentralized web
+CURRENT PROJECTS:
+- Alpaca Network - Web3 Dex & Token Launcher with AI Inference platform
+- InvestInsight - Track Web3, Stocks & Shares and property assets all in one place
+- Decentratech - Various Web3 dApps
+- Utmost Utopia - Car Dealership
+- TM-Hub - Personal project for Trackmania community stats tracking
 
 PASSION:
-I love creating elegant solutions to complex problems and mentoring other developers. 
-When I'm not coding, you'll find me exploring new technologies or contributing to open source projects.
+I love building innovative blockchain solutions and creating elegant systems that solve complex problems. 
+When I'm not coding, you'll find me snowboarding or engaging with the gaming community.
 
 TECHNICAL FOCUS:
-- Modern JavaScript/TypeScript ecosystems
-- Cloud-native architecture and microservices
-- Blockchain and Web3 technologies
-- Open source contribution and community building
+- Blockchain and Web3 technologies (Solidity, Smart Contracts, DeFi)
+- Full-stack development (React, Node.js, TypeScript, Python)
+- Cloud infrastructure (AWS, Firebase)
+- NFT marketplaces and tokenization
+- Trading bots and automation
 
 EDUCATION:
-- Computer Science background with focus on software engineering
-- Continuous learning through online courses and certifications
-- Active in developer communities and tech meetups`,
+- Diploma of Higher Education Computer Science - Leeds Trinity University (2019-2023)
+- BTEC Level 3 Extended Diploma Computer Science - Runshaw College (2017-2019)
+- GCSE Computer Science - Leyland St Marys Catholic Technology College (2011-2017)
+
+CERTIFICATIONS:
+- Foundational Cloud Practitioner - Amazon Web Services
+
+AWARDS:
+- Social Media Chief Technology Officer of the Year 2024 - CEO Monthly`,
 
     'experience.txt': `PROFESSIONAL EXPERIENCE
 ====================
 
-CTO - Townesquare (2023 - Present)
-- Leading technical strategy for Web3 social media platform
-- Managing development team and technical architecture
-- Implementing blockchain integration and smart contracts
-- Building scalable microservices architecture
-- Key Achievements: Launched MVP, onboarded 1000+ users, secured $2M funding
+CHIEF TECHNOLOGY OFFICER (CTO) - Strike
+Remote | Web3 Futures Exchange
+- Promoted from Chief Blockchain Officer to CTO to oversee technical leadership
+- Designed and implemented smart contracts managing all financial transactions
+- Developed and maintained APIs supporting seamless data flow
+- Spearheaded technology roadmap for football performance-based pricing platform
+- Specialized in Web3 futures exchange for football performance trading
 
-SENIOR FULL STACK DEVELOPER - TechCorp (2020 - 2023)
-- Developed and maintained multiple web applications
-- Led frontend architecture using React and TypeScript
-- Implemented CI/CD pipelines and DevOps practices
-- Mentored junior developers and conducted code reviews
-- Key Achievements: Improved app performance by 40%, reduced deployment time by 60%
+CO-FOUNDER & CTO - Decentratech
+Leeds, UK | Web3 Development Firm
+- Launched Web3 development firm delivering cutting-edge blockchain solutions
+- Led creation of innovative projects including trust-based games and Web3 dating app
+- Designed and deployed cross-chain solutions for casinos and other dApps
+- Built various Web3 dApps and blockchain integrations
 
-FULL STACK DEVELOPER - StartupXYZ (2018 - 2020)
-- Built MVP applications from concept to deployment
-- Worked with React, Node.js, and various databases
-- Collaborated with design team on user experience
-- Participated in agile development processes
-- Key Achievements: Built 3 successful MVPs, led team of 4 developers
+CHIEF TECHNOLOGY OFFICER (CTO) - TowneSquare Ltd
+Remote | Web3 Social Media Platform
+- Built Web3 social media platform and associated dApps
+- Directed team of developers, achieving 140,000 monthly active users
+- Delivered key features including NFT marketplace, loyalty tracker, and composable NFT collections
+- Secured $650,000 in pre-seed funding
+- Built on Aptos blockchain
 
-TECHNICAL CONSULTANT - Freelance (2017 - 2018)
-- Provided technical consulting for various startups
-- Built custom web applications and APIs
-- Conducted technical due diligence for investors
-- Key Achievements: Helped 5 startups raise $10M+ in funding`,
+BLOCKCHAIN ENGINEER - NextColony
+Remote | Web3 Space Resource Game
+- Developed Web3 space resource game on STEEM blockchain
+- Leveraged NFT technology for gameplay mechanics
+- Designed blockchain integrations to enhance user engagement
+
+DIRECTOR - Mining Central
+Leeds, UK | Cryptocurrency Mining Company
+- Founded cryptocurrency mining company offering cloud-based mining solutions
+- Negotiated hardware acquisitions and optimized mining processes
+- Developed software platform enabling easy customer participation in cryptocurrency mining
+- Brought mining to cloud for people to enter the industry without hardware
+
+TECHNICAL ANALYST & BOT DEVELOPER - SippyCupTrading
+Remote | Trading Community Platform
+- Provided technical analysis for community of 20,000 Discord members
+- Built trading bots to automate investment strategies for crypto and forex
+- Supported community by delivering insights and automated solutions
+- Platform where users pay monthly subscription for premium investment advice
+
+INTERN - TriTech Ltd
+Remote | Web Development
+- Sole developer for Suicide Prevention UK website
+- Project dedicated to mental health awareness and support
+- Designed and built full-stack website ensuring user-friendly interface and robust backend
+
+INTERN - Shoo Social Media
+Leeds, UK | Marketing & SEO
+- Gained hands-on experience in SEO and web development
+- Enhanced website performance and traffic through technical optimisations
+- Marketing company offering services to businesses across the UK
+
+INTERN - ElbowSpace
+Leeds, UK | Site Building Platform
+- Worked on easy-to-use site-building tool tailored for student unions
+- Developed Vue-based templates for accessible website creation
+- Contributed to front-end and back-end integration
+- Platform making site building easy for Student Unions across the UK`,
 
     'skills.txt': `TECHNICAL SKILLS
 ===============
 
+PROGRAMMING LANGUAGES:
+- Python (11+ years) - Trading bots, automation, backend services
+- JavaScript/TypeScript (11+ years) - Full-stack development
+- Solidity - Smart contract development
+- C++ - System-level programming
+- SQL - Database queries and optimization
+
 FRONTEND DEVELOPMENT:
-- React, Next.js, TypeScript (5+ years)
-- HTML5, CSS3, JavaScript (ES6+) (6+ years)
-- Material-UI, Styled Components, Tailwind CSS
-- Redux, Context API, Zustand
-- Webpack, Vite, Parcel
-- Testing: Jest, React Testing Library, Cypress
+- React - Modern UI development
+- Vue.js - Component-based frameworks
+- Next.js - Server-side rendering and static generation
+- React Native - Mobile application development
+- HTML5, CSS3, JavaScript (ES6+)
 
 BACKEND DEVELOPMENT:
-- Node.js, Express.js (5+ years)
-- Python, Django, Flask (3+ years)
-- RESTful APIs, GraphQL (4+ years)
-- Microservices architecture (3+ years)
-- Database design and optimization (5+ years)
+- Node.js - Server-side JavaScript runtime
+- Express.js - Web application framework
+- RESTful APIs - API design and development
+- Microservices architecture - Scalable system design
 
-DATABASES & STORAGE:
-- PostgreSQL, MongoDB (5+ years)
-- Redis, Elasticsearch (3+ years)
-- Database migration and optimization
-- Data modeling and schema design
-
-DEVOPS & CLOUD:
-- AWS (EC2, S3, Lambda, RDS) (4+ years)
-- Azure, Google Cloud Platform (2+ years)
-- Docker, Kubernetes (3+ years)
-- CI/CD pipelines (GitHub Actions, Jenkins)
-- Linux server administration (5+ years)
-- Monitoring and logging (Prometheus, Grafana)
-
-WEB3 & BLOCKCHAIN:
-- Solidity, Web3.js, Ethers.js (2+ years)
-- Smart contract development and auditing
-- DeFi protocols and yield farming
+BLOCKCHAIN & WEB3:
+- Solidity - Smart contract development and auditing
+- Web3.js, Ethers.js - Blockchain interactions
+- SolanaSDK - Solana blockchain development
+- Smart contract development - DeFi protocols, NFT marketplaces
+- Cross-chain solutions - Multi-blockchain integrations
 - NFT marketplaces and tokenization
+- DeFi protocols and yield farming
 - IPFS integration and decentralized storage
 
-PROGRAMMING LANGUAGES:
-- JavaScript/TypeScript (Expert)
-- Python (Advanced)
-- Solidity (Intermediate)
-- Go (Beginner)
-- Rust (Learning)`,
+DATABASES & STORAGE:
+- MongoDB - NoSQL database
+- Firebase - Real-time database and backend services
+- SQL databases - Relational database management
+
+DEVOPS & CLOUD:
+- AWS - Cloud infrastructure (EC2, S3, Lambda, RDS)
+- Firebase - Backend-as-a-Service
+- DevOps - CI/CD pipelines, automation
+- GitHub - Version control and collaboration
+- Linux server administration
+
+SOFT SKILLS:
+- Agile methodologies - Scrum, Kanban
+- Project management - Team leadership and coordination
+- Problem-solving - Complex technical challenges
+- Technical writing - Documentation and communication
+- Team leadership - Managing development teams
+
+PERSONAL INTERESTS:
+- Hardware knowledge - System architecture and optimization
+- Snowboarding - Active outdoor enthusiast
+- Ex-professional gamer - Competitive gaming background`,
 
     'projects.txt': `FEATURED PROJECTS
 ===============
 
-TOWNESQUARE (Web3 Social Media Platform)
-- Role: CTO & Lead Developer (2023 - Present)
-- Tech: React, Next.js, TypeScript, Solidity, IPFS, Node.js
-- Description: Decentralized social media platform with NFT integration
-- Features: User profiles, content creation, token rewards, governance
-- Impact: 1000+ users, $2M funding raised, 50+ smart contracts deployed
-- GitHub: github.com/townesquare/platform
+CURRENT PROJECTS:
+-----------------
 
-E-COMMERCE PLATFORM
-- Role: Full Stack Developer (2021 - 2022)
-- Tech: Next.js, Node.js, PostgreSQL, Stripe, Redis
-- Description: High-performance e-commerce solution for retail clients
-- Features: Product catalog, payment processing, admin dashboard, analytics
-- Impact: 10,000+ products, $500K+ in transactions processed
-- Performance: 99.9% uptime, <2s page load times
+ALPACA NETWORK
+- Type: Web3 Dex & Token Launcher with AI Inference platform
+- Description: Decentralized exchange and token launching platform with integrated AI capabilities
+- Status: Active Development
 
-TASK MANAGEMENT APP
-- Role: Lead Developer (2020 - 2021)
-- Tech: React, Express, MongoDB, Socket.io, Docker
-- Description: Collaborative project management tool for remote teams
-- Features: Real-time updates, team collaboration, file sharing, time tracking
-- Impact: 500+ teams using the platform, 50,000+ tasks managed
-- Awards: "Best Productivity App" at TechCrunch Disrupt
+INVESTINSIGHT
+- Type: Multi-Asset Tracking Platform
+- Description: Track Web3, Stocks & Shares and property assets all in one place, with social features
+- Features: Unified asset tracking, social community, portfolio management
+- Status: Active Development
 
-API GATEWAY SERVICE
-- Role: Backend Developer (2019 - 2020)
-- Tech: Node.js, Express, Redis, Docker, Kubernetes
-- Description: Microservices API gateway for enterprise clients
-- Features: Rate limiting, authentication, load balancing, monitoring
-- Impact: 1M+ requests/day, 99.99% uptime, 50% cost reduction
-- Architecture: Handles 100+ microservices, 10+ client applications
+DECENTRATECH
+- Type: Web3 dApps Development
+- Description: Various Web3 decentralized applications
+- Status: Active Development
 
-BLOCKCHAIN ANALYTICS DASHBOARD
-- Role: Full Stack Developer (2022 - 2023)
-- Tech: React, D3.js, Web3.js, Python, FastAPI
-- Description: Real-time analytics dashboard for DeFi protocols
-- Features: Live data visualization, portfolio tracking, yield farming
-- Impact: 5,000+ users, $10M+ in tracked assets
-- Innovation: First real-time DeFi analytics platform`,
+UTMOST UTOPIA
+- Type: Car Dealership Platform
+- Description: Car dealership management and sales platform
+- Status: Active Development
+
+TM-HUB
+- Type: Gaming Community Platform
+- Description: Personal project for Trackmania community tracking player and campaign stats
+- Features: Player statistics, campaign tracking, community features
+- Status: Active Development
+
+PAST PROJECTS:
+-------------
+
+STRIKE
+- Type: Web3 Futures Exchange
+- Description: Web3 futures exchange specializing in football performance-based pricing
+- Role: CTO (promoted from Chief Blockchain Officer)
+- Tech: Smart contracts, APIs, blockchain integration
+- Impact: Managed all financial transactions via smart contracts
+
+MINING CENTRAL
+- Type: Cryptocurrency Mining Company
+- Description: Cloud-based mining solutions bringing mining to the cloud
+- Role: Director & Founder
+- Features: Software platform for easy customer participation
+- Impact: Enabled people to enter mining industry without hardware
+
+TOWNESQUARE
+- Type: Web3 Social Media Platform
+- Description: Web3 social media platform built on Aptos blockchain
+- Role: CTO & Co-Founder
+- Tech: React, Next.js, TypeScript, Solidity, Aptos
+- Features: NFT marketplace, loyalty tracker, composable NFT collections
+- Impact: 140,000 monthly active users, $650,000 pre-seed funding secured
+
+DECADENT BLOCKCHAIN SOLUTIONS
+- Type: Web3 Mobile Gaming
+- Description: Bringing Web3 Mobile Gaming to WAXP Network, based on EOS
+- Role: Director & <Founder></Founder>
+- Features: Mobile gaming with blockchain integration
+
+NEXTCOLONY
+- Type: NFT Space Game
+- Description: NFT Space Game based on STEEM blockchain
+- Role: Blockchain Engineer
+- Features: Web3 gameplay mechanics, NFT technology
+
+CRYPOS
+- Type: Masternode Platform
+- Description: Bringing Masternodes to the masses through collaborative collateral funding
+- Role: Director & Founder
+- Features: Auto-reinvesting of funds earned, collaborative funding
+
+SIPPYCUPTRADING
+- Type: Investment Platform
+- Description: Platform where users pay monthly subscription for premium investment advice
+- Role: Technical Analyst & Bot Developer
+- Features: Trading bots, technical analysis, 20,000+ Discord community
+
+USEHODL
+- Type: Cryptocurrency Blog
+- Description: Blog posts surrounding cryptocurrency
+- Role: Writer
+- Content: Educational and informational articles
+
+PERSONAL TRADING BOTS
+- Type: Automated Trading
+- Description: Personal trading bots for use on Binance using Python
+- Features: Automated trading strategies, crypto trading
+
+ELBOWSPACE
+- Type: Site Building Platform
+- Description: Platform making site building easy for Student Unions across the UK
+- Role: Intern
+- Tech: Vue.js
+- Features: Easy-to-use templates for student unions
+
+SHOO SOCIAL MEDIA
+- Type: Marketing Platform
+- Description: Marketing company offering services to businesses across the UK
+- Role: Intern
+- Features: SEO, web development, marketing services
+
+TRITECH
+- Type: Mental Health Website
+- Description: Suicide Prevention UK site for charity
+- Role: Intern & Sole Developer
+- Features: Full-stack website, mental health awareness and support
+
+CSGO GAMBLING PLATFORMS
+- Type: Gaming Gambling Sites
+- Description: Three successful CS:GO skins gambling platforms
+- Role: Director & Founder
+- Projects: CSGORoyale (roulette), CSGO-Pixels (roulette, coinflip & jackpot), CSGOBucks (roulette & jackpot)
+- Features: CS:GO skins as currency, various gambling mechanics`,
 
     'contact.txt': `CONTACT INFORMATION
 =================
 
-EMAIL: joseph.hughes@example.com
-PHONE: +1 (555) 123-4567
-LOCATION: London, UK
-LINKEDIN: linkedin.com/in/josephhughes
-GITHUB: github.com/josephhughes
-TWITTER: @josephhughes_dev
-WEBSITE: josephhughes.dev
+EMAIL: joe@investinsight.io
+PHONE: +44 7834 852855
+LOCATION: Leeds, UK
+ADDRESS: 4 Holburn Walk, Leeds, West Yorkshire, LS6 2RA, UK
+
+SOCIAL LINKS:
+LINKEDIN: https://www.linkedin.com/in/joseph-hughes-082708200/
+GITHUB: https://github.com/d2Dreamer
+WEBSITE: https://jhugh.es
+DISCORD: d2dreamer
 
 AVAILABILITY:
-- Open to new opportunities
+- Currently open to remote roles
 - Available for freelance projects
-- Interested in Web3 and blockchain roles
+- Interested in Web3 and blockchain opportunities
 - Remote work preferred
-- Part-time consulting available
+- Full-time and part-time consulting available
 
 RESPONSE TIME:
 - Email: Within 24 hours
 - LinkedIn: Within 48 hours
 - GitHub: Check commits for activity
+- Discord: Usually online
 
-RESUME: Download my latest resume
-CV: View my detailed CV online
+RESUME: Available upon request
+CV: View detailed CV online or request via email
 
 PREFERRED CONTACT METHODS:
-1. Email (best for detailed discussions)
+1. Email (best for detailed discussions and opportunities)
 2. LinkedIn (professional networking)
-3. GitHub (technical collaboration)
-4. Twitter (quick updates and tech discussions)`,
+3. GitHub (technical collaboration and code review)
+4. Discord (quick communication and community engagement)`,
 
     'help.txt': `AVAILABLE COMMANDS
 =================
@@ -307,7 +444,7 @@ Enjoy exploring! 🚀`
         return 'joseph-hughes';
       
       case 'pwd':
-        return '/home/joseph-hughes/portfolio';
+        return '/home/d2dreamer/portfolio';
       
       case 'date':
         return new Date().toString();
@@ -332,13 +469,13 @@ Enjoy exploring! 🚀`
         return `Opening resume...\n\n📄 Resume.pdf - Click to download\n\nAlternatively, use 'cat contact.txt' for contact information.`;
       
       case 'github':
-        return `Opening GitHub profile...\n\n🔗 https://github.com/josephhughes\n\nCheck out my repositories and contributions!`;
+        return `Opening GitHub profile...\n\n🔗 https://github.com/d2Dreamer\n\nCheck out my repositories and contributions!`;
       
       case 'linkedin':
-        return `Opening LinkedIn profile...\n\n🔗 https://linkedin.com/in/josephhughes\n\nConnect with me on LinkedIn!`;
+        return `Opening LinkedIn profile...\n\n🔗 https://www.linkedin.com/in/joseph-hughes-082708200/\n\nConnect with me on LinkedIn!`;
       
       case 'email':
-        return `📧 joseph.hughes@example.com\n\nFeel free to reach out for opportunities or collaboration!`;
+        return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
         return `Console Portfolio v1.0.0\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
@@ -359,7 +496,7 @@ Enjoy exploring! 🚀`
     ╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚══════╝╚═╝
 
 OS: Portfolio Console v1.0.0
-Host: joseph-hughes-portfolio
+Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
 Shell: Interactive Console
@@ -649,7 +786,7 @@ Follow me for updates on my latest projects and tech insights!`;
                 fontWeight: 'normal',
                 userSelect: 'none',
                 textShadow: '0 0 5px #00ff00'
-              }}>joseph@portfolio:~$</span>
+              }}>d2dreamer@portfolio:~$</span>
               <span style={{ 
                 color: '#00ff00', 
                 marginLeft: '10px',
@@ -751,7 +888,7 @@ Follow me for updates on my latest projects and tech insights!`;
             fontWeight: 'normal',
             userSelect: 'none',
             textShadow: '0 0 5px #00ff00'
-          }}>joseph@portfolio:~$</span>
+          }}>d2dreamer@portfolio:~$</span>
           <input
             ref={inputRef}
             type="text"
