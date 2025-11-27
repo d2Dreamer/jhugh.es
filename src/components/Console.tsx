@@ -530,14 +530,16 @@ Enjoy exploring! 🚀`
         return fileSystem['contact.txt'];
       
       case 'resume':
+        return `Opening resume...\n\n📄 Coming soon\n\nAlternatively, use 'cat contact.txt' for contact information.`;
+
       case 'cv':
-        return `Opening resume...\n\n📄 Resume.pdf - Click to download\n\nAlternatively, use 'cat contact.txt' for contact information.`;
+        return `Opening resume...\n\n📄 Coming soon\n\nAlternatively, use 'cat contact.txt' for contact information.`;
       
       case 'github':
         return `Opening GitHub profile...\n\n🔗 https://github.com/d2Dreamer\n\nCheck out my repositories and contributions!`;
       
       case 'linkedin':
-        return `Opening LinkedIn profile...\n\n🔗 https://www.linkedin.com/in/joseph-hughes-082708200/\n\nConnect with me on LinkedIn!`;
+        return `Opening LinkedIn profile...\n\n🔗 https://www.linkedin.com/in/jhughes-dev\n\nConnect with me on LinkedIn!`;
       
       case 'email':
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
@@ -553,14 +555,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `    ███████╗██╗   ██╗███████╗████████╗███████╗██╗
-    ██╔════╝██║   ██║██╔════╝╚══██╔══╝██╔════╝██║
-    █████╗  ██║   ██║███████╗   ██║   █████╗  ██║
-    ██╔══╝  ██║   ██║╚════██║   ██║   ██╔══╝  ╚═╝
-    ██║     ╚██████╔╝███████║   ██║   ███████╗██╗
-    ╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚══════╝╚═╝
-
-OS: Portfolio Console v1.0.2
+        return `OS: Portfolio Console v1.0.2
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
