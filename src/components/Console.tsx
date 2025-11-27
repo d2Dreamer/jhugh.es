@@ -763,7 +763,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.0.6\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.0.7\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -773,7 +773,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `OS: Portfolio Console v1.0.6
+        return `OS: Portfolio Console v1.0.7
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -1250,7 +1250,7 @@ Follow me for updates on my latest projects and tech insights!`;
           opacity: 0.9,
           textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
         }}>
-          INTERACTIVE PORTFOLIO CONSOLE v1.0.6
+          INTERACTIVE PORTFOLIO CONSOLE v1.0.7
         </div>
         <div style={{ 
           fontSize: '8px', 
@@ -1278,7 +1278,7 @@ Follow me for updates on my latest projects and tech insights!`;
               alignItems: 'center',
               margin: '5px 0',
               padding: '8px 0',
-              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              backgroundColor: 'rgba(0, 0, 0, 0.4)',
               border: '1px solid transparent',
               transition: 'all 0.2s'
             }}>
@@ -1286,12 +1286,12 @@ Follow me for updates on my latest projects and tech insights!`;
                 color: '#00ff00', 
                 fontWeight: 'normal',
                 userSelect: 'none',
-                textShadow: '0 0 5px #00ff00'
+                textShadow: '0 0 4px #00ff00, 0 0 8px rgba(0, 255, 0, 0.6)'
               }}>d2dreamer@portfolio:~$</span>
               <span style={{ 
                 color: '#00ff00', 
                 marginLeft: '10px',
-                textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00'
+                textShadow: '0 0 4px #00ff00, 0 0 8px #00ff00, 0 0 12px rgba(0, 255, 0, 0.5)'
               }}>{command.input}</span>
             </div>
             {command.output && (
@@ -1299,12 +1299,13 @@ Follow me for updates on my latest projects and tech insights!`;
                 color: '#00ff00',
                 margin: '10px 0',
                 whiteSpace: 'pre-wrap',
-                backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                backgroundColor: 'rgba(0, 0, 0, 0.95)',
                 padding: '15px',
                 border: '2px solid #00ff00',
                 marginLeft: '20px',
                 boxShadow: '0 0 15px rgba(0, 255, 0, 0.5), inset 0 0 10px rgba(0, 255, 0, 0.1)',
-                textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00'
+                textShadow: '0 0 4px #00ff00, 0 0 8px #00ff00, 0 0 12px rgba(0, 255, 0, 0.6)',
+                letterSpacing: '0.5px'
               }}>
                 {command.input === 'ls' ? (
                   <div>

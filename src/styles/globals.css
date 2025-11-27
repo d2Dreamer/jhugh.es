@@ -665,10 +665,10 @@ a:hover {
   }
 }
 
-/* Force all text to be green with glow */
+/* Force all text to be green with glow - improved readability */
 .console-container * {
   color: #00ff00 !important;
-  text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00 !important;
+  text-shadow: 0 0 3px #00ff00, 0 0 6px #00ff00, 0 0 9px rgba(0, 255, 0, 0.5) !important;
 }
 
 /* Override any white backgrounds */
@@ -679,13 +679,16 @@ a:hover {
   border-color: #00ff00 !important;
 }
 
-/* Ensure all text elements are green */
+/* Ensure all text elements are green - improved readability */
 .console-container div,
 .console-container span,
 .console-container p,
 .console-container pre {
   color: #00ff00 !important;
-  text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00 !important;
+  text-shadow: 0 0 3px #00ff00, 0 0 6px #00ff00, 0 0 9px rgba(0, 255, 0, 0.5) !important;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Override any Material-UI or other framework styles */
