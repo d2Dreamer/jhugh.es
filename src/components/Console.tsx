@@ -220,10 +220,9 @@ BACKEND DEVELOPMENT:
 - Microservices architecture - Scalable system design
 
 BLOCKCHAIN & WEB3:
-- Solidity - Smart contract development and auditing
+- Solidity, Move - Smart contract development and auditing (low level)
 - Web3.js, Ethers.js - Blockchain interactions
-- SolanaSDK - Solana blockchain development
-- Smart contract development - DeFi protocols, NFT marketplaces
+- SolanaSDK, MoveSDK - Solana & Aptosblockchain development
 - Cross-chain solutions - Multi-blockchain integrations
 - NFT marketplaces and tokenization
 - DeFi protocols and yield farming
@@ -238,7 +237,7 @@ DEVOPS & CLOUD:
 - AWS - Cloud infrastructure (EC2, S3, Lambda, RDS)
 - Firebase - Backend-as-a-Service
 - DevOps - CI/CD pipelines, automation
-- GitHub - Version control and collaboration
+- GitHub - Version control, actions, and collaboration
 - Linux server administration
 
 SOFT SKILLS:
@@ -381,7 +380,7 @@ LOCATION: Leeds, UK
 ADDRESS: 4 Holburn Walk, Leeds, West Yorkshire, LS6 2RA, UK
 
 SOCIAL LINKS:
-LINKEDIN: https://www.linkedin.com/in/joseph-hughes-082708200/
+LINKEDIN: https://www.linkedin.com/in/jhughes-dev/
 GITHUB: https://github.com/d2Dreamer
 WEBSITE: https://jhugh.es
 DISCORD: d2dreamer
@@ -396,17 +395,18 @@ AVAILABILITY:
 RESPONSE TIME:
 - Email: Within 24 hours
 - LinkedIn: Within 48 hours
-- GitHub: Check commits for activity
 - Discord: Usually online
+- GitHub: Check commits for activity
 
 RESUME: Available upon request
 CV: View detailed CV online or request via email
 
 PREFERRED CONTACT METHODS:
-1. Email (best for detailed discussions and opportunities)
+1. Discord (quick communication and community engagement)
+2. Email (best for detailed discussions and opportunities)
 2. LinkedIn (professional networking)
 3. GitHub (technical collaboration and code review)
-4. Discord (quick communication and community engagement)`,
+4. WhatsApp (for urgent or time-sensitive discussions)`,
 
     'help.txt': `AVAILABLE COMMANDS
 =================
