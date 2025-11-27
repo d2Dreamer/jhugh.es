@@ -413,7 +413,7 @@ NAVIGATION
 Enjoy exploring! 🚀`
   };
 
-  const executeCommand = (input: string): string => {
+  const executeCommand = (input: string, commandsArray: Command[] = []): string => {
     const cmd = input.trim().toLowerCase();
     const parts = input.trim().split(' ');
 
@@ -478,7 +478,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.0.0\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.0.1\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -495,7 +495,7 @@ Enjoy exploring! 🚀`
     ██║     ╚██████╔╝███████║   ██║   ███████╗██╗
     ╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚══════╝╚═╝
 
-OS: Portfolio Console v1.0.0
+OS: Portfolio Console v1.0.1
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -511,7 +511,7 @@ Icons: ASCII`;
         return `Welcome to Joseph Hughes' Interactive Portfolio!\n\nThis is a terminal-style CV built with Next.js and TypeScript.\n\nQuick Navigation:\n- Type 'ls' to see all available files\n- Type 'cat <filename>' to read content\n- Type 'help' for all available commands\n- Type 'neofetch' for system information\n\nEnjoy exploring! 🚀`;
 
       case 'status':
-        return `Portfolio Status: ONLINE ✅\nLast Updated: ${new Date().toLocaleDateString()}\nTotal Commands: ${commands.length}\nSystem: Running smoothly\nTheme: 8-bit Green Terminal\n\nReady for your next command!`;
+        return `Portfolio Status: ONLINE ✅\nLast Updated: ${new Date().toLocaleDateString()}\nTotal Commands: ${commandsArray.length}\nSystem: Running smoothly\nTheme: 8-bit Green Terminal\n\nReady for your next command!`;
 
       case 'social':
         return `SOCIAL MEDIA & LINKS
@@ -549,7 +549,7 @@ Follow me for updates on my latest projects and tech insights!`;
     if (!currentInput.trim()) return;
 
     const input = currentInput;
-    const output = executeCommand(input);
+    const output = executeCommand(input, commands);
     
     // Add command to history immediately
     setCommandHistory(prev => [...prev, input]);
@@ -598,7 +598,7 @@ Follow me for updates on my latest projects and tech insights!`;
   };
 
   const handleFileClick = async (filename: string) => {
-    const output = executeCommand(`cat ${filename}`);
+    const output = executeCommand(`cat ${filename}`, commands);
     await addTypingCommand(`cat ${filename}`, output, 15);
   };
 
@@ -696,7 +696,7 @@ Follow me for updates on my latest projects and tech insights!`;
       const runInitialCommands = async () => {
         for (const cmd of initialCommands) {
           await new Promise(resolve => setTimeout(resolve, 1000));
-          const output = executeCommand(cmd);
+          const output = executeCommand(cmd, []);
           await addTypingCommand(cmd, output, 20);
         }
       };
@@ -749,7 +749,7 @@ Follow me for updates on my latest projects and tech insights!`;
           opacity: 0.9,
           textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
         }}>
-          INTERACTIVE PORTFOLIO CONSOLE v1.0.0
+          INTERACTIVE PORTFOLIO CONSOLE v1.0.1
         </div>
         <div style={{ 
           fontSize: '8px', 
