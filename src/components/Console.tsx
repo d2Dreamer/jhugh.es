@@ -763,7 +763,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.0.5\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.0.6\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -773,7 +773,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `OS: Portfolio Console v1.0.5
+        return `OS: Portfolio Console v1.0.6
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -1207,7 +1207,7 @@ Follow me for updates on my latest projects and tech insights!`;
 
   return (
     <div 
-      className="console-container scanlines terminal-flicker" 
+      className="console-container scanlines terminal-flicker glitch-text" 
       ref={consoleRef}
       style={{
         backgroundColor: '#000000',
@@ -1250,7 +1250,7 @@ Follow me for updates on my latest projects and tech insights!`;
           opacity: 0.9,
           textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
         }}>
-          INTERACTIVE PORTFOLIO CONSOLE v1.0.5
+          INTERACTIVE PORTFOLIO CONSOLE v1.0.6
         </div>
         <div style={{ 
           fontSize: '8px', 
