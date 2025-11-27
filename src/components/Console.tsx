@@ -69,13 +69,35 @@ AWARDS:
     'experience.txt': `PROFESSIONAL EXPERIENCE
 ====================
 
-CHIEF TECHNOLOGY OFFICER (CTO) - Strike
-Remote | Web3 Futures Exchange
-- Promoted from Chief Blockchain Officer to CTO to oversee technical leadership
-- Designed and implemented smart contracts managing all financial transactions
-- Developed and maintained APIs supporting seamless data flow
-- Spearheaded technology roadmap for football performance-based pricing platform
-- Specialized in Web3 futures exchange for football performance trading
+CURRENT PROJECTS:
+-----------------
+
+Tech Lead - Alpaca Network
+Remote | Web3 Dex & Token Launcher with AI Inference Platform
+- Building decentralized exchange and token launching platform
+- Integrating AI inference capabilities for enhanced trading features
+- Developing Web3 infrastructure for token launches and trading
+- Status: Active Development
+
+FOUNDER & CTO - InvestInsight
+Remote | Multi-Asset Tracking Platform
+- Building unified platform to track Web3, Stocks & Shares, and property assets
+- Implementing social features for community engagement
+- Developing portfolio management and analytics tools
+- Status: Active Development
+
+Web Developer - Utmost Utopia
+Remote | Car Dealership Platform
+- Building car dealership management and sales platform
+- Developing inventory management and customer relationship systems
+- Status: Active Development
+
+FOUNDER & DEVELOPER - TM-Hub
+Remote | Gaming Community Platform
+- Personal project for Trackmania community
+- Building player statistics and campaign tracking system
+- Developing community features for Trackmania players
+- Status: Active Development
 
 CO-FOUNDER & CTO - Decentratech
 Leeds, UK | Web3 Development Firm
@@ -83,6 +105,17 @@ Leeds, UK | Web3 Development Firm
 - Led creation of innovative projects including trust-based games and Web3 dating app
 - Designed and deployed cross-chain solutions for casinos and other dApps
 - Built various Web3 dApps and blockchain integrations
+
+PAST EXPERIENCE:
+---------------
+
+CHIEF TECHNOLOGY OFFICER (CTO) - Strike
+Remote | Web3 Futures Exchange
+- Promoted from Chief Blockchain Officer to CTO to oversee technical leadership
+- Designed and implemented smart contracts managing all financial transactions
+- Developed and maintained APIs supporting seamless data flow
+- Spearheaded technology roadmap for football performance-based pricing platform
+- Specialized in Web3 futures exchange for football performance trading
 
 CHIEF TECHNOLOGY OFFICER (CTO) - TowneSquare Ltd
 Remote | Web3 Social Media Platform
@@ -92,18 +125,30 @@ Remote | Web3 Social Media Platform
 - Secured $650,000 in pre-seed funding
 - Built on Aptos blockchain
 
+DIRECTOR & FOUNDER - Decadent Blockchain Solutions
+Remote | Web3 Mobile Gaming
+- Brought Web3 Mobile Gaming to WAXP Network, based on EOS
+- Developed mobile gaming platform with blockchain integration
+- Implemented NFT and token mechanics for gaming experience
+
 BLOCKCHAIN ENGINEER - NextColony
 Remote | Web3 Space Resource Game
 - Developed Web3 space resource game on STEEM blockchain
 - Leveraged NFT technology for gameplay mechanics
 - Designed blockchain integrations to enhance user engagement
 
-DIRECTOR - Mining Central
+DIRECTOR & FOUNDER - Mining Central
 Leeds, UK | Cryptocurrency Mining Company
 - Founded cryptocurrency mining company offering cloud-based mining solutions
 - Negotiated hardware acquisitions and optimized mining processes
 - Developed software platform enabling easy customer participation in cryptocurrency mining
 - Brought mining to cloud for people to enter the industry without hardware
+
+DIRECTOR & FOUNDER - Crypos
+Remote | Masternode Platform
+- Built platform bringing Masternodes to the masses through collaborative collateral funding
+- Implemented auto-reinvesting of funds earned
+- Enabled collaborative funding for masternode participation
 
 TECHNICAL ANALYST & BOT DEVELOPER - SippyCupTrading
 Remote | Trading Community Platform
@@ -111,6 +156,26 @@ Remote | Trading Community Platform
 - Built trading bots to automate investment strategies for crypto and forex
 - Supported community by delivering insights and automated solutions
 - Platform where users pay monthly subscription for premium investment advice
+
+DEVELOPER - Personal Trading Bots
+Remote | Automated Trading Systems
+- Developed personal trading bots for use on Binance using Python
+- Implemented automated trading strategies for cryptocurrency markets
+- Built risk management and portfolio optimization features
+
+DIRECTOR & FOUNDER - CSGO Gambling Platforms
+Remote | Gaming Gambling Sites
+- Founded and developed three successful CS:GO skins gambling platforms
+- CSGORoyale: Roulette-based gambling platform
+- CSGO-Pixels: Roulette, coinflip & jackpot platform
+- CSGOBucks: Roulette & jackpot platform
+- Implemented CS:GO skins as currency with various gambling mechanics
+
+WRITER - UseHODL
+Remote | Cryptocurrency Blog
+- Wrote educational and informational blog posts surrounding cryptocurrency
+- Covered blockchain technology, trading strategies, and market analysis
+- Provided content for cryptocurrency community
 
 INTERN - TriTech Ltd
 Remote | Web Development
