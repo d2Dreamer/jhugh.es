@@ -23,6 +23,8 @@ const Console: React.FC<ConsoleProps> = ({ initialCommands = [] }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const initialCommandsRun = useRef(false);
   const [typingCommands, setTypingCommands] = useState<Command[]>([]);
+  const typingCancelledRef = useRef(false);
+  const currentTypingCommandRef = useRef<{ input: string; fullOutput: string } | null>(null);
 
   const fileSystem = {
     'about.txt': `JOSEPH HUGHES - SENIOR SOFTWARE ENGINEER
@@ -545,7 +547,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.0.3\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.0.4\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -555,7 +557,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `OS: Portfolio Console v1.0.3
+        return `OS: Portfolio Console v1.0.4
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -606,6 +608,35 @@ Follow me for updates on my latest projects and tech insights!`;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentInput.trim()) return;
+
+    // If there's a command currently typing, cancel it and show full output immediately
+    if (typingCommands.length > 0 || currentTypingCommandRef.current) {
+      typingCancelledRef.current = true;
+      
+      // Complete any ongoing typing commands immediately
+      if (currentTypingCommandRef.current) {
+        setCommands(prev => 
+          prev.map((cmd, index) => {
+            // Find the last command that matches the typing one
+            const lastIndex = prev.length - 1;
+            if (index === lastIndex && cmd.input === currentTypingCommandRef.current?.input) {
+              return {
+                ...cmd,
+                output: currentTypingCommandRef.current.fullOutput,
+                isTyping: false
+              };
+            }
+            return cmd;
+          })
+        );
+        setTypingCommands([]);
+        currentTypingCommandRef.current = null;
+      }
+      
+      // Small delay to ensure state updates
+      await new Promise(resolve => setTimeout(resolve, 50));
+      typingCancelledRef.current = false;
+    }
 
     const input = currentInput;
     const output = executeCommand(input, commands);
@@ -662,6 +693,10 @@ Follow me for updates on my latest projects and tech insights!`;
   };
 
   const addTypingCommand = async (input: string, output: string, speed: number = 20) => {
+    // Reset cancellation flag and track this command
+    typingCancelledRef.current = false;
+    currentTypingCommandRef.current = { input, fullOutput: output };
+    
     const newCommand: Command = {
       input,
       output: '',
@@ -679,6 +714,22 @@ Follow me for updates on my latest projects and tech insights!`;
       let currentFiles: string[] = [];
       
       for (let i = 0; i < files.length; i++) {
+        // Check if typing was cancelled
+        if (typingCancelledRef.current) {
+          // Show full output immediately
+          const fullFileList = Object.keys(fileSystem)
+            .map(filename => `${getFileIcon(filename)} ${filename}`)
+            .join('\n');
+          setCommands(prev => 
+            prev.map((cmd, index) => 
+              index === prev.length - 1 
+                ? { ...cmd, output: fullFileList, isTyping: false }
+                : cmd
+            )
+          );
+          break;
+        }
+        
         currentFiles.push(files[i]);
         const fileList = currentFiles
           .map(filename => `${getFileIcon(filename)} ${filename}`)
@@ -710,6 +761,18 @@ Follow me for updates on my latest projects and tech insights!`;
         // Type by lines for very long content
         const lines = output.split('\n');
         for (let i = 0; i < lines.length; i++) {
+          // Check if typing was cancelled
+          if (typingCancelledRef.current) {
+            setCommands(prev => 
+              prev.map((cmd, index) => 
+                index === prev.length - 1 
+                  ? { ...cmd, output: output, isTyping: false }
+                  : cmd
+              )
+            );
+            break;
+          }
+          
           typedOutput += lines[i] + (i < lines.length - 1 ? '\n' : '');
           setCommands(prev => 
             prev.map((cmd, index) => 
@@ -726,6 +789,18 @@ Follow me for updates on my latest projects and tech insights!`;
         // Type by chunks (words) for medium content
         const words = output.split(/(\s+)/);
         for (let i = 0; i < words.length; i++) {
+          // Check if typing was cancelled
+          if (typingCancelledRef.current) {
+            setCommands(prev => 
+              prev.map((cmd, index) => 
+                index === prev.length - 1 
+                  ? { ...cmd, output: output, isTyping: false }
+                  : cmd
+              )
+            );
+            break;
+          }
+          
           typedOutput += words[i];
           setCommands(prev => 
             prev.map((cmd, index) => 
@@ -742,6 +817,18 @@ Follow me for updates on my latest projects and tech insights!`;
       } else {
         // Character-by-character for short content (original behavior)
         for (let i = 0; i < output.length; i++) {
+          // Check if typing was cancelled
+          if (typingCancelledRef.current) {
+            setCommands(prev => 
+              prev.map((cmd, index) => 
+                index === prev.length - 1 
+                  ? { ...cmd, output: output, isTyping: false }
+                  : cmd
+              )
+            );
+            break;
+          }
+          
           typedOutput += output[i];
           setCommands(prev => 
             prev.map((cmd, index) => 
@@ -757,6 +844,7 @@ Follow me for updates on my latest projects and tech insights!`;
     }
     
     setTypingCommands(prev => prev.slice(1));
+    currentTypingCommandRef.current = null;
     
     // Final scroll to ensure we're at the bottom
     setTimeout(() => scrollToBottom(), 100);
@@ -902,7 +990,7 @@ Follow me for updates on my latest projects and tech insights!`;
           opacity: 0.9,
           textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
         }}>
-          INTERACTIVE PORTFOLIO CONSOLE v1.0.3
+          INTERACTIVE PORTFOLIO CONSOLE v1.0.4
         </div>
         <div style={{ 
           fontSize: '8px', 
