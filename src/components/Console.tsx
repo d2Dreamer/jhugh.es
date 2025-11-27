@@ -671,27 +671,51 @@ $ social
 $ status
 $ clear`,
 
-    'README.md': `JOSEPH HUGHES - PORTFOLIO
-========================
+    'README.md': `INTERACTIVE CONSOLE PORTFOLIO v1.0.8
+===========================================
 
-Welcome to my interactive console portfolio!
-
-This is a terminal-style CV website built with Next.js and TypeScript.
+Welcome to my terminal-style portfolio! This is an interactive CV website
+built with Next.js, TypeScript, and React that transforms a traditional
+portfolio into a command-line interface experience.
 
 QUICK START
 -----------
-- Type 'help' to see available commands
-- Use 'ls' to list all files
-- Use 'cat <filename>' to read files
-- Type 'clear' to reset the console
+Type 'help' to see all available commands
+Use 'ls' to list all available files
+Use 'cat <filename>' to read file contents
+Type 'clear' to reset the console
+Press ↑/↓ arrow keys to navigate command history
 
-NAVIGATION
-----------
-- about.txt      - Personal information
-- experience.txt - Work history
-- skills.txt     - Technical skills
-- projects.txt   - Featured projects
-- contact.txt    - Contact information
+AVAILABLE FILES
+---------------
+📄 about.txt      - Personal information and background
+📄 experience.txt - Professional work history
+📄 skills.txt     - Technical skills and expertise
+📄 projects.txt   - Featured projects and work
+📄 contact.txt    - Contact information and social links
+📄 help.txt       - Complete command reference
+
+KEY COMMANDS
+------------
+whoami        - Display current user information
+github        - Open GitHub profile
+linkedin      - Open LinkedIn profile
+email         - Show email address
+social        - Display all social links
+version       - Show version information
+neofetch      - Display system information
+status        - Show console statistics
+
+FUN FEATURES
+------------
+matrix        - Run the Matrix animation
+hack          - Run the hack sequence animation
+
+TECHNOLOGIES
+------------
+Built with Next.js 13.2.4, TypeScript, and React
+Features retro terminal aesthetics with glitch effects
+Fully responsive and interactive
 
 Enjoy exploring! 🚀`
   };
@@ -707,10 +731,13 @@ Enjoy exploring! 🚀`
           .join('\n');
       
       case 'cat':
-        if (parts[1]) {
-          const filename = parts[1];
-          if (fileSystem[filename as keyof typeof fileSystem]) {
-            return fileSystem[filename as keyof typeof fileSystem];
+        if (parts.length > 1 && parts[1]) {
+          // Get all parts after 'cat' to handle filenames with spaces
+          const filename = parts.slice(1).join(' ');
+          // Check if file exists in fileSystem (case-sensitive)
+          const fileContent = (fileSystem as Record<string, string>)[filename];
+          if (fileContent) {
+            return fileContent;
           }
           return `cat: ${filename}: No such file or directory`;
         }
@@ -763,7 +790,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.0.7\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.0.8\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -773,7 +800,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `OS: Portfolio Console v1.0.7
+        return `OS: Portfolio Console v1.0.8
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -1175,6 +1202,95 @@ Follow me for updates on my latest projects and tech insights!`;
     return parts.length > 0 ? parts : text;
   };
 
+  const renderTextWithClickableCommands = (text: string): React.ReactNode => {
+    // Available files and commands that should be clickable
+    const clickableItems = [
+      ...Object.keys(fileSystem),
+      'github', 'linkedin', 'email', 'social', 'whoami', 'pwd', 'date', 'uptime',
+      'version', 'neofetch', 'status', 'clear', 'help', 'matrix', 'hack',
+      'about', 'experience', 'skills', 'projects', 'contact', 'resume', 'cv'
+    ];
+    
+    // Create regex pattern to match these items (word boundaries to avoid partial matches)
+    const pattern = new RegExp(`\\b(${clickableItems.map(item => item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'gi');
+    
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = pattern.exec(text)) !== null) {
+      // Add text before the match
+      if (match.index > lastIndex) {
+        const beforeText = text.substring(lastIndex, match.index);
+        // Also check for URLs in the before text
+        parts.push(renderTextWithLinks(beforeText));
+      }
+
+      const item = match[0].toLowerCase();
+      const isFile = Object.keys(fileSystem).includes(item);
+      const command = isFile ? `cat ${item}` : item;
+
+      // Add clickable button
+      parts.push(
+        <button
+          key={match.index}
+          onClick={async () => {
+            if (isFile) {
+              await handleFileClick(item);
+            } else {
+              const output = executeCommand(command, commands);
+              if (output === 'MATRIX_ANIMATION' || output === 'HACK_ANIMATION') {
+                const newCommand: Command = {
+                  input: command,
+                  output: output,
+                  timestamp: new Date(),
+                  isTyping: false,
+                };
+                setCommands(prev => [...prev, newCommand]);
+                setTimeout(() => scrollToBottom(), 100);
+              } else {
+                await addTypingCommand(command, output, 15);
+              }
+            }
+          }}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: '#00ff00',
+            fontFamily: 'Press Start 2P, monospace',
+            fontSize: 'inherit',
+            textDecoration: 'underline',
+            textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00',
+            cursor: 'pointer',
+            padding: '0 2px',
+            margin: '0',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#00cc00';
+            e.currentTarget.style.textShadow = '0 0 10px #00ff00, 0 0 20px #00ff00';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#00ff00';
+            e.currentTarget.style.textShadow = '0 0 5px #00ff00, 0 0 10px #00ff00';
+          }}
+        >
+          {match[0]}
+        </button>
+      );
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    // Add remaining text (also check for URLs)
+    if (lastIndex < text.length) {
+      const remainingText = text.substring(lastIndex);
+      parts.push(renderTextWithLinks(remainingText));
+    }
+
+    return parts.length > 0 ? parts : renderTextWithLinks(text);
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [commands, typingCommands]);
@@ -1250,7 +1366,7 @@ Follow me for updates on my latest projects and tech insights!`;
           opacity: 0.9,
           textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
         }}>
-          INTERACTIVE PORTFOLIO CONSOLE v1.0.7
+          INTERACTIVE PORTFOLIO CONSOLE v1.0.8
         </div>
         <div style={{ 
           fontSize: '8px', 
@@ -1311,9 +1427,13 @@ Follow me for updates on my latest projects and tech insights!`;
                   <div>
                     {command.output.split('\n').map((line, index) => {
                       if (!line.trim()) return null;
-                      const parts = line.split(' ');
+                      // Extract icon and filename more reliably
+                      // Format is: [ICON] filename or [ICON]  filename (with spaces)
+                      const parts = line.trim().split(/\s+/);
                       const icon = parts[0];
-                      const filename = parts.slice(1).join(' ');
+                      const filename = parts.slice(1).join(' ').trim();
+                      
+                      if (!filename) return null; // Skip if no filename found
                       
                       return (
                         <div key={index} style={{ marginBottom: '5px' }}>
@@ -1361,6 +1481,22 @@ Follow me for updates on my latest projects and tech insights!`;
                   <MatrixAnimation onScroll={scrollToBottom} />
                 ) : command.output === 'HACK_ANIMATION' ? (
                   <HackAnimation animationKey={`${command.timestamp.getTime()}-${command.input}`} onScroll={scrollToBottom} />
+                ) : command.input === 'cat README.md' || (command.input.startsWith('cat ') && command.input.includes('README.md')) ? (
+                  <>
+                    {command.output.split('\n').map((line, lineIndex, lines) => (
+                      <React.Fragment key={lineIndex}>
+                        {renderTextWithClickableCommands(line)}
+                        {lineIndex < lines.length - 1 && '\n'}
+                      </React.Fragment>
+                    ))}
+                    {command.isTyping && (
+                      <span style={{
+                        animation: 'blink 1s infinite',
+                        color: '#00ff00',
+                        fontWeight: 'bold'
+                      }}>█</span>
+                    )}
+                  </>
                 ) : (
                   <>
                     {command.output.split('\n').map((line, lineIndex, lines) => (
