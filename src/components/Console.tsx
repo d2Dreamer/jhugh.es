@@ -543,7 +543,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.0.1\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.0.2\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -560,7 +560,7 @@ Enjoy exploring! 🚀`
     ██║     ╚██████╔╝███████║   ██║   ███████╗██╗
     ╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚══════╝╚═╝
 
-OS: Portfolio Console v1.0.1
+OS: Portfolio Console v1.0.2
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -751,6 +751,61 @@ Follow me for updates on my latest projects and tech insights!`;
     }
   };
 
+  const renderTextWithLinks = (text: string): React.ReactNode => {
+    // URL regex pattern - matches http, https, and email addresses
+    const urlRegex = /(https?:\/\/[^\s]+|[\w.-]+@[\w.-]+\.\w+)/g;
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = urlRegex.exec(text)) !== null) {
+      // Add text before the URL
+      if (match.index > lastIndex) {
+        parts.push(text.substring(lastIndex, match.index));
+      }
+
+      const url = match[0];
+      const isEmail = url.includes('@');
+      const href = isEmail ? `mailto:${url}` : url;
+
+      // Add clickable link
+      parts.push(
+        <a
+          key={match.index}
+          href={href}
+          target={isEmail ? undefined : "_blank"}
+          rel={isEmail ? undefined : "noopener noreferrer"}
+          style={{
+            color: '#00ff00',
+            textDecoration: 'underline',
+            textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#00cc00';
+            e.currentTarget.style.textShadow = '0 0 10px #00ff00, 0 0 20px #00ff00';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#00ff00';
+            e.currentTarget.style.textShadow = '0 0 5px #00ff00, 0 0 10px #00ff00';
+          }}
+        >
+          {url}
+        </a>
+      );
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    // Add remaining text
+    if (lastIndex < text.length) {
+      parts.push(text.substring(lastIndex));
+    }
+
+    return parts.length > 0 ? parts : text;
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [commands, typingCommands]);
@@ -814,7 +869,7 @@ Follow me for updates on my latest projects and tech insights!`;
           opacity: 0.9,
           textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
         }}>
-          INTERACTIVE PORTFOLIO CONSOLE v1.0.1
+          INTERACTIVE PORTFOLIO CONSOLE v1.0.2
         </div>
         <div style={{ 
           fontSize: '8px', 
@@ -922,7 +977,12 @@ Follow me for updates on my latest projects and tech insights!`;
                   </div>
                 ) : (
                   <>
-                    {command.output}
+                    {command.output.split('\n').map((line, lineIndex, lines) => (
+                      <React.Fragment key={lineIndex}>
+                        {renderTextWithLinks(line)}
+                        {lineIndex < lines.length - 1 && '\n'}
+                      </React.Fragment>
+                    ))}
                     {command.isTyping && (
                       <span style={{
                         animation: 'blink 1s infinite',
