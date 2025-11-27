@@ -563,8 +563,7 @@ Shell: Interactive Console
 Terminal: Web Browser
 CPU: JavaScript Engine
 Memory: Dynamic
-Theme: 8-bit Green
-Icons: ASCII`;
+Theme: 8-bit Green`;
 
       case 'intro':
       case 'welcome':
