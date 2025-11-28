@@ -1448,7 +1448,7 @@ Follow me for updates on my latest projects and tech insights!`;
         paddingTop: isMobile ? 'max(env(safe-area-inset-top, 0px), 5px)' : '8px',
         paddingLeft: isMobile ? 'max(env(safe-area-inset-left, 0px), 5px)' : '8px',
         paddingRight: isMobile ? 'max(env(safe-area-inset-right, 0px), 5px)' : '8px',
-        paddingBottom: isMobile ? '80px' : '8px',
+        paddingBottom: isMobile ? '0' : '8px',
         boxSizing: 'border-box',
         overflow: 'hidden',
         display: 'flex',
@@ -1651,7 +1651,7 @@ Follow me for updates on my latest projects and tech insights!`;
       <form onSubmit={handleSubmit} style={{ 
         flexShrink: 0,
         position: isMobile ? 'absolute' : 'relative',
-        bottom: isMobile ? '0' : 'auto',
+        bottom: isMobile ? 'calc(env(safe-area-inset-bottom, 0px) + 56px)' : 'auto',
         left: isMobile ? '0' : 'auto',
         right: isMobile ? '0' : 'auto',
         backgroundColor: '#000000',
