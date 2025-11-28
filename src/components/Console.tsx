@@ -1441,24 +1441,18 @@ Follow me for updates on my latest projects and tech insights!`;
         fontFamily: 'Press Start 2P, monospace',
         border: '3px solid #00ff00',
         boxShadow: '0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 20px rgba(0, 255, 0, 0.1)',
-        height: isMobile ? '100dvh' : '100vh',
-        maxHeight: isMobile ? '100dvh' : '100vh',
-        width: '100vw',
-        maxWidth: '100%',
+        height: '100%',
+        width: '100%',
         padding: isMobile ? '5px' : '8px',
         paddingTop: isMobile ? 'max(env(safe-area-inset-top, 0px), 5px)' : '8px',
         paddingLeft: isMobile ? 'max(env(safe-area-inset-left, 0px), 5px)' : '8px',
         paddingRight: isMobile ? 'max(env(safe-area-inset-right, 0px), 5px)' : '8px',
-        paddingBottom: isMobile ? '100px' : '8px',
+        paddingBottom: isMobile ? '80px' : '8px',
         boxSizing: 'border-box',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0
+        position: 'relative'
       }}
     >
       <div className="console-header" style={{ 
@@ -1651,8 +1645,8 @@ Follow me for updates on my latest projects and tech insights!`;
 
       <form onSubmit={handleSubmit} style={{ 
         flexShrink: 0,
-        position: isMobile ? 'fixed' : 'relative',
-        bottom: isMobile ? '80px' : 'auto',
+        position: isMobile ? 'absolute' : 'relative',
+        bottom: isMobile ? '0' : 'auto',
         left: isMobile ? '0' : 'auto',
         right: isMobile ? '0' : 'auto',
         backgroundColor: '#000000',
@@ -1660,7 +1654,7 @@ Follow me for updates on my latest projects and tech insights!`;
         paddingLeft: isMobile ? 'max(env(safe-area-inset-left, 0px), 13px)' : '0',
         paddingRight: isMobile ? 'max(env(safe-area-inset-right, 0px), 13px)' : '0',
         paddingBottom: isMobile ? 'max(env(safe-area-inset-bottom, 0px), 12px)' : '0',
-        zIndex: 99999,
+        zIndex: 100,
         marginTop: isMobile ? '0' : 'auto',
         width: isMobile ? '100%' : 'auto',
         boxSizing: 'border-box',
