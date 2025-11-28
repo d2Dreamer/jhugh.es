@@ -1418,10 +1418,10 @@ Follow me for updates on my latest projects and tech insights!`;
         // Set bottom offset: browser UI + safe area + small buffer
         // Most mobile browsers have ~56-80px navigation bars
         // Since the app doesn't scroll, the browser UI is always visible
-        // Use a more aggressive offset to ensure visibility
-        const calculatedOffset = browserUIHeight + safeAreaBottom + 15;
-        // Use at least 100px to account for most browser navigation bars
-        setBottomOffset(Math.max(100, calculatedOffset));
+        // Calculate based on actual browser UI height
+        const calculatedOffset = browserUIHeight + safeAreaBottom + 5;
+        // Use a reasonable minimum but don't force it too high
+        setBottomOffset(Math.max(60, Math.min(120, calculatedOffset)));
       } else {
         setBottomOffset(0);
       }
@@ -1566,7 +1566,7 @@ Follow me for updates on my latest projects and tech insights!`;
           flex: 1,
           overflowY: 'auto',
           overflowX: 'hidden',
-          marginBottom: '5px',
+          marginBottom: isMobile ? '0' : '5px',
           paddingRight: '5px',
           WebkitOverflowScrolling: 'touch',
           minHeight: 0,
