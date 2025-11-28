@@ -1441,11 +1441,12 @@ Follow me for updates on my latest projects and tech insights!`;
         fontFamily: 'Press Start 2P, monospace',
         border: '3px solid #00ff00',
         boxShadow: '0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 20px rgba(0, 255, 0, 0.1)',
-        height: '100dvh',
+        height: isMobile ? '100dvh' : '100vh',
         maxHeight: '100vh',
         width: '100vw',
         maxWidth: '100%',
-        padding: '8px',
+        padding: isMobile ? '5px' : '8px',
+        paddingBottom: isMobile ? '65px' : '8px',
         boxSizing: 'border-box',
         overflow: 'hidden',
         display: 'flex',
@@ -1508,7 +1509,9 @@ Follow me for updates on my latest projects and tech insights!`;
           marginBottom: '5px',
           paddingRight: '5px',
           WebkitOverflowScrolling: 'touch',
-          minHeight: 0
+          minHeight: 0,
+          maxHeight: '100%',
+          overflow: 'auto'
         }}>
         {commands.map((command, index) => (
           <div key={`${command.timestamp.getTime()}-${command.input}-${index}`} style={{ marginBottom: '10px' }}>
@@ -1645,12 +1648,20 @@ Follow me for updates on my latest projects and tech insights!`;
 
       <form onSubmit={handleSubmit} style={{ 
         flexShrink: 0,
-        position: 'sticky',
-        bottom: 0,
+        position: isMobile ? 'fixed' : 'relative',
+        bottom: isMobile ? '0' : 'auto',
+        left: isMobile ? '0' : 'auto',
+        right: isMobile ? '0' : 'auto',
         backgroundColor: '#000000',
-        paddingTop: '5px',
-        zIndex: 100,
-        marginTop: 'auto'
+        paddingTop: isMobile ? '8px' : '5px',
+        paddingLeft: isMobile ? '13px' : '0',
+        paddingRight: isMobile ? '13px' : '0',
+        paddingBottom: isMobile ? 'calc(env(safe-area-inset-bottom, 0px) + 8px)' : '0',
+        zIndex: 1000,
+        marginTop: isMobile ? '0' : 'auto',
+        width: isMobile ? '100%' : 'auto',
+        boxSizing: 'border-box',
+        borderTop: isMobile ? '1px solid rgba(0, 255, 0, 0.3)' : 'none'
       }}>
         <div style={{
           display: 'flex',
