@@ -10,5 +10,9 @@ export default function App() {
     'status'
   ];
 
-  return <Console initialCommands={initialCommands} />;
+  return (
+    <div style={{ height: '100%', width: '100%', position: 'relative' }}>
+      <Console initialCommands={initialCommands} />
+    </div>
+  );
 }

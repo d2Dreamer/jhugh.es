@@ -1443,6 +1443,7 @@ Follow me for updates on my latest projects and tech insights!`;
         boxShadow: '0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 20px rgba(0, 255, 0, 0.1)',
         height: '100%',
         width: '100%',
+        minHeight: '100%',
         padding: isMobile ? '5px' : '8px',
         paddingTop: isMobile ? 'max(env(safe-area-inset-top, 0px), 5px)' : '8px',
         paddingLeft: isMobile ? 'max(env(safe-area-inset-left, 0px), 5px)' : '8px',
@@ -1452,7 +1453,11 @@ Follow me for updates on my latest projects and tech insights!`;
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        position: 'relative'
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0
       }}
     >
       <div className="console-header" style={{ 
