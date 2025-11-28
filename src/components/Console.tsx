@@ -232,6 +232,7 @@ const Console: React.FC<ConsoleProps> = ({ initialCommands = [] }) => {
   const [isTyping, setIsTyping] = useState(false);
   const [autocompleteSuggestion, setAutocompleteSuggestion] = useState<string>('');
   const [isMobile, setIsMobile] = useState(false);
+  const [bottomOffset, setBottomOffset] = useState(80);
   const inputRef = useRef<HTMLInputElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -1384,14 +1385,34 @@ Follow me for updates on my latest projects and tech insights!`;
     scrollToBottom();
   }, [commands, typingCommands]);
 
-  // Check if mobile on mount and window resize
+  // Check if mobile on mount and window resize, and calculate bottom offset
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      
+      if (mobile) {
+        // Calculate the actual visible viewport height
+        const vh = window.innerHeight;
+        const vh100 = window.outerHeight;
+        // The difference is roughly the browser UI height
+        const browserUIHeight = Math.max(0, vh100 - vh);
+        // Set bottom offset to account for browser UI + safe area
+        const safeAreaBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-bottom)') || '0', 10) || 0;
+        setBottomOffset(Math.max(80, browserUIHeight + safeAreaBottom + 10));
+      } else {
+        setBottomOffset(0);
+      }
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener('orientationchange', checkMobile);
+    // Also check after a short delay to catch dynamic browser UI changes
+    setTimeout(checkMobile, 500);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('orientationchange', checkMobile);
+    };
   }, []);
 
   // Update autocomplete suggestion when input changes
@@ -1651,7 +1672,7 @@ Follow me for updates on my latest projects and tech insights!`;
       <form onSubmit={handleSubmit} style={{ 
         flexShrink: 0,
         position: isMobile ? 'absolute' : 'relative',
-        bottom: isMobile ? 'calc(env(safe-area-inset-bottom, 0px) + 56px)' : 'auto',
+        bottom: isMobile ? `${bottomOffset}px` : 'auto',
         left: isMobile ? '0' : 'auto',
         right: isMobile ? '0' : 'auto',
         backgroundColor: '#000000',
