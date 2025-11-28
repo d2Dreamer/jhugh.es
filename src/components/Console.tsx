@@ -230,6 +230,7 @@ const Console: React.FC<ConsoleProps> = ({ initialCommands = [] }) => {
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [isTyping, setIsTyping] = useState(false);
+  const [autocompleteSuggestion, setAutocompleteSuggestion] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -671,7 +672,7 @@ $ social
 $ status
 $ clear`,
 
-    'README.md': `INTERACTIVE CONSOLE PORTFOLIO v1.0.8
+    'README.md': `INTERACTIVE CONSOLE PORTFOLIO v1.0.9
 ===========================================
 
 Welcome to my terminal-style portfolio! This is an interactive CV website
@@ -790,7 +791,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.0.8\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.0.9\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -800,7 +801,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `OS: Portfolio Console v1.0.8
+        return `OS: Portfolio Console v1.0.9
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -912,24 +913,111 @@ Follow me for updates on my latest projects and tech insights!`;
     }
   };
 
+  // Get all available commands and files for autocomplete
+  const getAllCompletions = (): string[] => {
+    const commands = [
+      'ls', 'cat', 'clear', 'help', 'whoami', 'pwd', 'date', 'projects', 
+      'skills', 'experience', 'about', 'contact', 'resume', 'cv', 'github', 
+      'linkedin', 'email', 'version', 'uptime', 'neofetch', 'intro', 'welcome', 
+      'status', 'social', 'tree', 'matrix', 'hack'
+    ];
+    const files = Object.keys(fileSystem);
+    return [...commands, ...files];
+  };
+
+  // Find autocomplete suggestion based on current input
+  const getAutocompleteSuggestion = (input: string): string => {
+    const trimmedInput = input.trim();
+    if (!trimmedInput) return '';
+    
+    const parts = trimmedInput.split(' ');
+    const completions = getAllCompletions();
+    
+    // If it's "cat" command, autocomplete files
+    if (parts[0].toLowerCase() === 'cat' && parts.length === 2) {
+      const filePrefix = parts[1].toLowerCase();
+      const matchingFiles = Object.keys(fileSystem).filter(file => 
+        file.toLowerCase().startsWith(filePrefix)
+      );
+      if (matchingFiles.length === 1) {
+        return `cat ${matchingFiles[0]}`;
+      }
+      return '';
+    }
+    
+    // Autocomplete command (first word)
+    if (parts.length === 1) {
+      const inputLower = parts[0].toLowerCase();
+      const matchingCommands = completions.filter(cmd => 
+        cmd.toLowerCase().startsWith(inputLower)
+      );
+      if (matchingCommands.length === 1) {
+        return matchingCommands[0];
+      }
+      // If multiple matches, find the longest common prefix
+      if (matchingCommands.length > 1) {
+        let commonPrefix = matchingCommands[0].toLowerCase();
+        for (let i = 1; i < matchingCommands.length; i++) {
+          const cmd = matchingCommands[i].toLowerCase();
+          let j = 0;
+          while (j < commonPrefix.length && j < cmd.length && commonPrefix[j] === cmd[j]) {
+            j++;
+          }
+          commonPrefix = commonPrefix.substring(0, j);
+        }
+        if (commonPrefix.length > inputLower.length) {
+          return matchingCommands[0].substring(0, commonPrefix.length);
+        }
+      }
+    }
+    
+    return '';
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowUp') {
       e.preventDefault();
-      if (historyIndex < commandHistory.length - 1) {
-        const newIndex = historyIndex + 1;
+      setAutocompleteSuggestion(''); // Clear autocomplete when navigating history
+      if (commandHistory.length === 0) return;
+      
+      // Move backward in history (older commands)
+      if (historyIndex === -1) {
+        // Start from the most recent command (last in array)
+        const newIndex = commandHistory.length - 1;
         setHistoryIndex(newIndex);
-        setCurrentInput(commandHistory[commandHistory.length - 1 - newIndex]);
+        setCurrentInput(commandHistory[newIndex]);
+      } else if (historyIndex > 0) {
+        // Go to older command
+        const newIndex = historyIndex - 1;
+        setHistoryIndex(newIndex);
+        setCurrentInput(commandHistory[newIndex]);
       }
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
-      if (historyIndex > 0) {
-        const newIndex = historyIndex - 1;
+      setAutocompleteSuggestion(''); // Clear autocomplete when navigating history
+      if (historyIndex === -1) return; // Already at the bottom
+      
+      // Move forward in history (newer commands)
+      if (historyIndex < commandHistory.length - 1) {
+        const newIndex = historyIndex + 1;
         setHistoryIndex(newIndex);
-        setCurrentInput(commandHistory[commandHistory.length - 1 - newIndex]);
-      } else if (historyIndex === 0) {
+        setCurrentInput(commandHistory[newIndex]);
+      } else {
+        // Reached the most recent command, clear input
         setHistoryIndex(-1);
         setCurrentInput('');
       }
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      if (autocompleteSuggestion && autocompleteSuggestion.toLowerCase().startsWith(currentInput.toLowerCase())) {
+        // Complete the suggestion
+        setCurrentInput(autocompleteSuggestion);
+        setAutocompleteSuggestion('');
+        setHistoryIndex(-1); // Reset history index when autocompleting
+      }
+    } else {
+      // Reset history index when typing other keys
+      setHistoryIndex(-1);
     }
   };
 
@@ -1295,6 +1383,17 @@ Follow me for updates on my latest projects and tech insights!`;
     scrollToBottom();
   }, [commands, typingCommands]);
 
+  // Update autocomplete suggestion when input changes
+  useEffect(() => {
+    if (currentInput && historyIndex === -1) {
+      const suggestion = getAutocompleteSuggestion(currentInput);
+      setAutocompleteSuggestion(suggestion);
+    } else {
+      setAutocompleteSuggestion('');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentInput, historyIndex]);
+
   useEffect(() => {
     if (initialCommands.length > 0 && !initialCommandsRun.current) {
       initialCommandsRun.current = true;
@@ -1366,7 +1465,7 @@ Follow me for updates on my latest projects and tech insights!`;
           opacity: 0.9,
           textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
         }}>
-          INTERACTIVE PORTFOLIO CONSOLE v1.0.8
+          INTERACTIVE PORTFOLIO CONSOLE v1.0.9
         </div>
         <div style={{ 
           fontSize: '8px', 
@@ -1528,7 +1627,8 @@ Follow me for updates on my latest projects and tech insights!`;
           padding: '8px 0',
           backgroundColor: 'rgba(0, 0, 0, 0.3)',
           border: '1px solid transparent',
-          transition: 'all 0.2s'
+          transition: 'all 0.2s',
+          position: 'relative'
         }}>
           <span style={{ 
             color: '#00ff00', 
@@ -1536,29 +1636,51 @@ Follow me for updates on my latest projects and tech insights!`;
             userSelect: 'none',
             textShadow: '0 0 5px #00ff00'
           }}>d2dreamer@portfolio:~$</span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={currentInput}
-            onChange={(e) => setCurrentInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            style={{
-              background: 'rgba(0, 0, 0, 0.8)',
-              border: '2px solid #00ff00',
-              color: '#00ff00',
-              fontFamily: 'Press Start 2P, monospace',
-              fontSize: '12px',
-              outline: 'none',
-              width: '100%',
-              marginLeft: '10px',
-              caretColor: '#00ff00',
-              textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00',
-              boxShadow: '0 0 10px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.1)',
-              padding: '5px 10px'
-            }}
-            placeholder="Type a command..."
-            autoFocus
-          />
+          <div style={{ position: 'relative', flex: 1, marginLeft: '10px' }}>
+            <input
+              ref={inputRef}
+              type="text"
+              value={currentInput}
+              onChange={(e) => setCurrentInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              style={{
+                background: 'rgba(0, 0, 0, 0.8)',
+                border: '2px solid #00ff00',
+                color: '#00ff00',
+                fontFamily: 'Press Start 2P, monospace',
+                fontSize: '12px',
+                outline: 'none',
+                width: '100%',
+                caretColor: '#00ff00',
+                textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00',
+                boxShadow: '0 0 10px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.1)',
+                padding: '5px 10px',
+                position: 'relative',
+                zIndex: 2
+              }}
+              placeholder="Type a command..."
+              autoFocus
+            />
+            {autocompleteSuggestion && autocompleteSuggestion.toLowerCase() !== currentInput.toLowerCase() && autocompleteSuggestion.toLowerCase().startsWith(currentInput.toLowerCase()) && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '5px',
+                  left: '10px',
+                  color: '#00ff00',
+                  fontFamily: 'Press Start 2P, monospace',
+                  fontSize: '12px',
+                  opacity: 0.7,
+                  pointerEvents: 'none',
+                  whiteSpace: 'pre',
+                  textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px rgba(0, 255, 0, 0.5)',
+                  zIndex: 1
+                }}
+              >
+                {autocompleteSuggestion}
+              </div>
+            )}
+          </div>
         </div>
       </form>
     </div>
