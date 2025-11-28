@@ -12,7 +12,9 @@ body {
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
 }
 
 a {
