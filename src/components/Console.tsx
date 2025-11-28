@@ -1441,12 +1441,12 @@ Follow me for updates on my latest projects and tech insights!`;
         fontFamily: 'Press Start 2P, monospace',
         border: '3px solid #00ff00',
         boxShadow: '0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 20px rgba(0, 255, 0, 0.1)',
-        height: isMobile ? '100dvh' : '100vh',
-        maxHeight: '100vh',
+        height: isMobile ? '100svh' : '100vh',
+        maxHeight: isMobile ? '100svh' : '100vh',
         width: '100vw',
         maxWidth: '100%',
         padding: isMobile ? '5px' : '8px',
-        paddingBottom: isMobile ? '65px' : '8px',
+        paddingBottom: isMobile ? '70px' : '8px',
         boxSizing: 'border-box',
         overflow: 'hidden',
         display: 'flex',
@@ -1649,19 +1649,20 @@ Follow me for updates on my latest projects and tech insights!`;
       <form onSubmit={handleSubmit} style={{ 
         flexShrink: 0,
         position: isMobile ? 'fixed' : 'relative',
-        bottom: isMobile ? '0' : 'auto',
+        bottom: isMobile ? 'env(safe-area-inset-bottom, 0px)' : 'auto',
         left: isMobile ? '0' : 'auto',
         right: isMobile ? '0' : 'auto',
         backgroundColor: '#000000',
-        paddingTop: isMobile ? '8px' : '5px',
+        paddingTop: isMobile ? '10px' : '5px',
         paddingLeft: isMobile ? '13px' : '0',
         paddingRight: isMobile ? '13px' : '0',
-        paddingBottom: isMobile ? 'calc(env(safe-area-inset-bottom, 0px) + 8px)' : '0',
-        zIndex: 1000,
+        paddingBottom: isMobile ? 'max(env(safe-area-inset-bottom, 0px), 10px)' : '0',
+        zIndex: 10000,
         marginTop: isMobile ? '0' : 'auto',
         width: isMobile ? '100%' : 'auto',
         boxSizing: 'border-box',
-        borderTop: isMobile ? '1px solid rgba(0, 255, 0, 0.3)' : 'none'
+        borderTop: isMobile ? '2px solid rgba(0, 255, 0, 0.5)' : 'none',
+        boxShadow: isMobile ? '0 -5px 20px rgba(0, 0, 0, 0.8)' : 'none'
       }}>
         <div style={{
           display: 'flex',
@@ -1693,18 +1694,21 @@ Follow me for updates on my latest projects and tech insights!`;
                 border: isMobile ? '1px solid #00ff00' : '2px solid #00ff00',
                 color: '#00ff00',
                 fontFamily: 'Press Start 2P, monospace',
-                fontSize: isMobile ? '10px' : '12px',
+                fontSize: isMobile ? '11px' : '12px',
                 outline: 'none',
                 width: '100%',
                 caretColor: '#00ff00',
                 textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00',
                 boxShadow: '0 0 10px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.1)',
-                padding: '5px 10px',
+                padding: isMobile ? '12px 10px' : '5px 10px',
                 position: 'relative',
-                zIndex: 2
+                zIndex: 2,
+                WebkitAppearance: 'none',
+                borderRadius: '0',
+                minHeight: isMobile ? '44px' : 'auto'
               }}
-              placeholder="Type a command..."
-              autoFocus
+              placeholder={isMobile ? "Command..." : "Type a command..."}
+              autoFocus={!isMobile}
             />
             {autocompleteSuggestion && autocompleteSuggestion.toLowerCase() !== currentInput.toLowerCase() && autocompleteSuggestion.toLowerCase().startsWith(currentInput.toLowerCase()) && (
               <div
