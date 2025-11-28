@@ -231,6 +231,7 @@ const Console: React.FC<ConsoleProps> = ({ initialCommands = [] }) => {
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [isTyping, setIsTyping] = useState(false);
   const [autocompleteSuggestion, setAutocompleteSuggestion] = useState<string>('');
+  const [isMobile, setIsMobile] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -672,7 +673,7 @@ $ social
 $ status
 $ clear`,
 
-    'README.md': `INTERACTIVE CONSOLE PORTFOLIO v1.0.9
+    'README.md': `INTERACTIVE CONSOLE PORTFOLIO v1.1.0
 ===========================================
 
 Welcome to my terminal-style portfolio! This is an interactive CV website
@@ -791,7 +792,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.0.9\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.1.0\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -801,7 +802,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `OS: Portfolio Console v1.0.9
+        return `OS: Portfolio Console v1.1.0
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -1383,6 +1384,16 @@ Follow me for updates on my latest projects and tech insights!`;
     scrollToBottom();
   }, [commands, typingCommands]);
 
+  // Check if mobile on mount and window resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Update autocomplete suggestion when input changes
   useEffect(() => {
     if (currentInput && historyIndex === -1) {
@@ -1430,49 +1441,59 @@ Follow me for updates on my latest projects and tech insights!`;
         fontFamily: 'Press Start 2P, monospace',
         border: '3px solid #00ff00',
         boxShadow: '0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 20px rgba(0, 255, 0, 0.1)',
-        height: '100vh',
+        height: '100dvh',
+        maxHeight: '100vh',
         width: '100vw',
-        padding: '15px',
+        maxWidth: '100%',
+        padding: '8px',
         boxSizing: 'border-box',
         overflow: 'hidden',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0
       }}
     >
       <div className="console-header" style={{ 
         color: '#00ff00', 
-        borderBottom: '3px solid #00ff00', 
-        paddingBottom: '10px',
+        borderBottom: '2px solid #00ff00', 
+        paddingBottom: '5px',
         textShadow: '0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00',
         boxShadow: '0 5px 15px rgba(0, 255, 0, 0.3)',
-        flexShrink: 0
+        flexShrink: 0,
+        paddingTop: '5px'
       }}>
         <div className="ascii-art" style={{
           fontFamily: 'Press Start 2P, monospace',
-          fontSize: '10px',
+          fontSize: isMobile ? '6px' : '10px',
           color: '#00ff00',
           textShadow: '0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00',
           whiteSpace: 'pre',
-          margin: '10px 0',
-          letterSpacing: '2px'
+          margin: '5px 0',
+          letterSpacing: isMobile ? '1px' : '2px',
+          lineHeight: isMobile ? '1.2' : '1.5'
         }}>
 {`JOSEPH HUGHES - BLOCKCHAIN ENTHUSIAST`}
         </div>
         <div style={{ 
-          fontSize: '10px', 
-          color: '#00ff00', 
-          marginTop: '10px', 
+          fontSize: isMobile ? '6px' : '10px',
+          color: '#00ff00',
+          marginTop: isMobile ? '3px' : '10px',
           opacity: 0.9,
           textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
         }}>
-          INTERACTIVE PORTFOLIO CONSOLE v1.0.9
+          INTERACTIVE PORTFOLIO CONSOLE v1.1.0
         </div>
         <div style={{ 
-          fontSize: '8px', 
-          color: '#00ff00', 
-          marginTop: '5px', 
+          fontSize: isMobile ? '5px' : '8px',
+          color: '#00ff00',
+          marginTop: isMobile ? '2px' : '5px',
           opacity: 0.7,
-          textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00'
+          textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00',
+          display: isMobile ? 'none' : 'block'
         }}>
           Type &apos;help&apos; for available commands • Press ↑/↓ for command history • Click files in &apos;ls&apos; output
         </div>
@@ -1483,8 +1504,11 @@ Follow me for updates on my latest projects and tech insights!`;
         style={{ 
           flex: 1,
           overflowY: 'auto',
-          marginBottom: '10px',
-          paddingRight: '5px'
+          overflowX: 'hidden',
+          marginBottom: '5px',
+          paddingRight: '5px',
+          WebkitOverflowScrolling: 'touch',
+          minHeight: 0
         }}>
         {commands.map((command, index) => (
           <div key={`${command.timestamp.getTime()}-${command.input}-${index}`} style={{ marginBottom: '10px' }}>
@@ -1619,13 +1643,21 @@ Follow me for updates on my latest projects and tech insights!`;
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} style={{ flexShrink: 0 }}>
+      <form onSubmit={handleSubmit} style={{ 
+        flexShrink: 0,
+        position: 'sticky',
+        bottom: 0,
+        backgroundColor: '#000000',
+        paddingTop: '5px',
+        zIndex: 100,
+        marginTop: 'auto'
+      }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          margin: '5px 0',
-          padding: '8px 0',
-          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+          margin: '2px 0',
+          padding: isMobile ? '5px 0' : '8px 0',
+          backgroundColor: 'rgba(0, 0, 0, 0.95)',
           border: '1px solid transparent',
           transition: 'all 0.2s',
           position: 'relative'
@@ -1634,9 +1666,11 @@ Follow me for updates on my latest projects and tech insights!`;
             color: '#00ff00', 
             fontWeight: 'normal',
             userSelect: 'none',
-            textShadow: '0 0 5px #00ff00'
+            textShadow: '0 0 5px #00ff00',
+            fontSize: isMobile ? '8px' : '12px',
+            display: isMobile ? 'none' : 'inline'
           }}>d2dreamer@portfolio:~$</span>
-          <div style={{ position: 'relative', flex: 1, marginLeft: '10px' }}>
+          <div style={{ position: 'relative', flex: 1, marginLeft: isMobile ? '5px' : '10px' }}>
             <input
               ref={inputRef}
               type="text"
@@ -1645,10 +1679,10 @@ Follow me for updates on my latest projects and tech insights!`;
               onKeyDown={handleKeyDown}
               style={{
                 background: 'rgba(0, 0, 0, 0.8)',
-                border: '2px solid #00ff00',
+                border: isMobile ? '1px solid #00ff00' : '2px solid #00ff00',
                 color: '#00ff00',
                 fontFamily: 'Press Start 2P, monospace',
-                fontSize: '12px',
+                fontSize: isMobile ? '10px' : '12px',
                 outline: 'none',
                 width: '100%',
                 caretColor: '#00ff00',
