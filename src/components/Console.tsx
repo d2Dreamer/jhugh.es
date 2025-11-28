@@ -1392,26 +1392,63 @@ Follow me for updates on my latest projects and tech insights!`;
       setIsMobile(mobile);
       
       if (mobile) {
-        // Calculate the actual visible viewport height
-        const vh = window.innerHeight;
-        const vh100 = window.outerHeight;
-        // The difference is roughly the browser UI height
-        const browserUIHeight = Math.max(0, vh100 - vh);
-        // Set bottom offset to account for browser UI + safe area
-        const safeAreaBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-bottom)') || '0', 10) || 0;
-        setBottomOffset(Math.max(80, browserUIHeight + safeAreaBottom + 10));
+        // Use Visual Viewport API if available (gives actual visible viewport)
+        let visibleHeight = window.innerHeight;
+        let browserUIHeight = 0;
+        
+        if (window.visualViewport) {
+          // Visual Viewport API gives us the actual visible area
+          visibleHeight = window.visualViewport.height;
+          // Calculate browser UI height
+          browserUIHeight = Math.max(0, window.outerHeight - visibleHeight);
+        } else {
+          // Fallback: use innerHeight vs outerHeight
+          const vh = window.innerHeight;
+          const vh100 = window.outerHeight;
+          browserUIHeight = Math.max(0, vh100 - vh);
+        }
+        
+        // Get safe area inset
+        const safeAreaBottom = parseInt(
+          getComputedStyle(document.documentElement)
+            .getPropertyValue('env(safe-area-inset-bottom)') || '0', 
+          10
+        ) || 0;
+        
+        // Set bottom offset: browser UI + safe area + small buffer
+        // Most mobile browsers have ~56-80px navigation bars
+        // Since the app doesn't scroll, the browser UI is always visible
+        // Use a more aggressive offset to ensure visibility
+        const calculatedOffset = browserUIHeight + safeAreaBottom + 15;
+        // Use at least 100px to account for most browser navigation bars
+        setBottomOffset(Math.max(100, calculatedOffset));
       } else {
         setBottomOffset(0);
       }
     };
+    
     checkMobile();
     window.addEventListener('resize', checkMobile);
     window.addEventListener('orientationchange', checkMobile);
-    // Also check after a short delay to catch dynamic browser UI changes
+    
+    // Listen to visual viewport changes if available
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', checkMobile);
+      window.visualViewport.addEventListener('scroll', checkMobile);
+    }
+    
+    // Check multiple times to catch browser UI animations
+    setTimeout(checkMobile, 100);
     setTimeout(checkMobile, 500);
+    setTimeout(checkMobile, 1000);
+    
     return () => {
       window.removeEventListener('resize', checkMobile);
       window.removeEventListener('orientationchange', checkMobile);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', checkMobile);
+        window.visualViewport.removeEventListener('scroll', checkMobile);
+      }
     };
   }, []);
 
