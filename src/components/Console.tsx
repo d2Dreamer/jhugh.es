@@ -1392,36 +1392,34 @@ Follow me for updates on my latest projects and tech insights!`;
       setIsMobile(mobile);
       
       if (mobile) {
-        // Use Visual Viewport API if available (gives actual visible viewport)
-        let visibleHeight = window.innerHeight;
+        // Calculate the difference between window height and visual viewport
+        // This gives us the browser UI height (address bar + navigation bar)
         let browserUIHeight = 0;
         
         if (window.visualViewport) {
-          // Visual Viewport API gives us the actual visible area
-          visibleHeight = window.visualViewport.height;
-          // Calculate browser UI height
-          browserUIHeight = Math.max(0, window.outerHeight - visibleHeight);
+          // Visual Viewport API: window.innerHeight includes browser UI
+          // visualViewport.height is the actual visible content area
+          // The difference is the browser UI at the bottom
+          const windowHeight = window.innerHeight;
+          const visualHeight = window.visualViewport.height;
+          // Bottom browser UI = total window height - visual viewport height
+          browserUIHeight = Math.max(0, windowHeight - visualHeight);
         } else {
-          // Fallback: use innerHeight vs outerHeight
-          const vh = window.innerHeight;
-          const vh100 = window.outerHeight;
-          browserUIHeight = Math.max(0, vh100 - vh);
+          // Fallback: estimate based on outerHeight vs innerHeight
+          browserUIHeight = Math.max(0, window.outerHeight - window.innerHeight);
         }
         
-        // Get safe area inset
+        // Get safe area inset (for device notches/home indicators)
         const safeAreaBottom = parseInt(
           getComputedStyle(document.documentElement)
             .getPropertyValue('env(safe-area-inset-bottom)') || '0', 
           10
         ) || 0;
         
-        // Set bottom offset: browser UI + safe area + small buffer
-        // Most mobile browsers have ~56-80px navigation bars
-        // Since the app doesn't scroll, the browser UI is always visible
-        // Calculate based on actual browser UI height
-        const calculatedOffset = browserUIHeight + safeAreaBottom + 5;
-        // Use a reasonable minimum but don't force it too high
-        setBottomOffset(Math.max(60, Math.min(120, calculatedOffset)));
+        // Bottom offset = browser navigation bar height + safe area
+        // No extra buffer needed - position it exactly above the browser UI
+        const calculatedOffset = browserUIHeight + safeAreaBottom;
+        setBottomOffset(Math.max(0, calculatedOffset));
       } else {
         setBottomOffset(0);
       }
@@ -1716,7 +1714,7 @@ Follow me for updates on my latest projects and tech insights!`;
         paddingTop: isMobile ? '12px' : '5px',
         paddingLeft: isMobile ? 'max(env(safe-area-inset-left, 0px), 13px)' : '0',
         paddingRight: isMobile ? 'max(env(safe-area-inset-right, 0px), 13px)' : '0',
-        paddingBottom: isMobile ? 'max(env(safe-area-inset-bottom, 0px), 12px)' : '0',
+        paddingBottom: isMobile ? 'env(safe-area-inset-bottom, 0px)' : '0',
         zIndex: 100,
         marginTop: isMobile ? '0' : 'auto',
         width: isMobile ? '100%' : 'auto',
