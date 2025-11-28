@@ -233,6 +233,7 @@ const Console: React.FC<ConsoleProps> = ({ initialCommands = [] }) => {
   const [autocompleteSuggestion, setAutocompleteSuggestion] = useState<string>('');
   const [isMobile, setIsMobile] = useState(false);
   const [bottomOffset, setBottomOffset] = useState(80);
+  const [formHeight, setFormHeight] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -1564,12 +1565,12 @@ Follow me for updates on my latest projects and tech insights!`;
           flex: 1,
           overflowY: 'auto',
           overflowX: 'hidden',
-          marginBottom: isMobile ? '0' : '5px',
+          marginBottom: isMobile ? `${formHeight + bottomOffset + 5}px` : '5px',
           paddingRight: '5px',
+          paddingBottom: isMobile ? '10px' : '0',
           WebkitOverflowScrolling: 'touch',
           minHeight: 0,
-          maxHeight: '100%',
-          overflow: 'auto'
+          maxHeight: '100%'
         }}>
         {commands.map((command, index) => (
           <div key={`${command.timestamp.getTime()}-${command.input}-${index}`} style={{ marginBottom: '10px' }}>
@@ -1599,7 +1600,7 @@ Follow me for updates on my latest projects and tech insights!`;
                 color: '#00ff00',
                 margin: '10px 0',
                 whiteSpace: 'pre-wrap',
-                backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                backgroundColor: '#000000',
                 padding: '15px',
                 border: '2px solid #00ff00',
                 marginLeft: '20px',
@@ -1704,30 +1705,40 @@ Follow me for updates on my latest projects and tech insights!`;
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} style={{ 
-        flexShrink: 0,
-        position: isMobile ? 'absolute' : 'relative',
-        bottom: isMobile ? `${bottomOffset}px` : 'auto',
-        left: isMobile ? '0' : 'auto',
-        right: isMobile ? '0' : 'auto',
-        backgroundColor: '#000000',
-        paddingTop: isMobile ? '12px' : '5px',
-        paddingLeft: isMobile ? 'max(env(safe-area-inset-left, 0px), 13px)' : '0',
-        paddingRight: isMobile ? 'max(env(safe-area-inset-right, 0px), 13px)' : '0',
-        paddingBottom: isMobile ? 'env(safe-area-inset-bottom, 0px)' : '0',
-        zIndex: 100,
-        marginTop: isMobile ? '0' : 'auto',
-        width: isMobile ? '100%' : 'auto',
-        boxSizing: 'border-box',
-        borderTop: isMobile ? '3px solid rgba(0, 255, 0, 0.8)' : 'none',
-        boxShadow: isMobile ? '0 -10px 30px rgba(0, 0, 0, 1)' : 'none'
-      }}>
+      <form 
+        ref={(el) => {
+          if (el && isMobile) {
+            // Measure form height including all padding
+            const height = el.offsetHeight;
+            setFormHeight(height);
+          }
+        }}
+        onSubmit={handleSubmit} 
+        style={{ 
+          flexShrink: 0,
+          position: isMobile ? 'absolute' : 'relative',
+          bottom: isMobile ? `${bottomOffset}px` : 'auto',
+          left: isMobile ? '0' : 'auto',
+          right: isMobile ? '0' : 'auto',
+          backgroundColor: '#000000',
+          paddingTop: isMobile ? '12px' : '5px',
+          paddingLeft: isMobile ? 'max(env(safe-area-inset-left, 0px), 13px)' : '0',
+          paddingRight: isMobile ? 'max(env(safe-area-inset-right, 0px), 13px)' : '0',
+          paddingBottom: isMobile ? 'env(safe-area-inset-bottom, 0px)' : '0',
+          zIndex: 100,
+          marginTop: isMobile ? '0' : 'auto',
+          width: isMobile ? '100%' : 'auto',
+          boxSizing: 'border-box',
+          borderTop: isMobile ? '3px solid rgba(0, 255, 0, 0.8)' : 'none',
+          boxShadow: isMobile ? '0 -10px 30px rgba(0, 0, 0, 1)' : 'none',
+          backdropFilter: isMobile ? 'blur(0px)' : 'none'
+        }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
           margin: '2px 0',
           padding: isMobile ? '5px 0' : '8px 0',
-          backgroundColor: 'rgba(0, 0, 0, 0.95)',
+          backgroundColor: '#000000',
           border: '1px solid transparent',
           transition: 'all 0.2s',
           position: 'relative'
