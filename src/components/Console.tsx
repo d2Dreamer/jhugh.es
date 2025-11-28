@@ -1441,15 +1441,15 @@ Follow me for updates on my latest projects and tech insights!`;
         fontFamily: 'Press Start 2P, monospace',
         border: '3px solid #00ff00',
         boxShadow: '0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 20px rgba(0, 255, 0, 0.1)',
-        height: isMobile ? '100svh' : '100vh',
-        maxHeight: isMobile ? '100svh' : '100vh',
+        height: isMobile ? 'calc(100vh - env(safe-area-inset-bottom, 0px) - 56px)' : '100vh',
+        maxHeight: isMobile ? 'calc(100vh - env(safe-area-inset-bottom, 0px) - 56px)' : '100vh',
         width: '100vw',
         maxWidth: '100%',
         padding: isMobile ? '5px' : '8px',
         paddingTop: isMobile ? 'max(env(safe-area-inset-top, 0px), 5px)' : '8px',
         paddingLeft: isMobile ? 'max(env(safe-area-inset-left, 0px), 5px)' : '8px',
         paddingRight: isMobile ? 'max(env(safe-area-inset-right, 0px), 5px)' : '8px',
-        paddingBottom: isMobile ? 'calc(70px + env(safe-area-inset-bottom, 0px) + 56px)' : '8px',
+        paddingBottom: isMobile ? '70px' : '8px',
         boxSizing: 'border-box',
         overflow: 'hidden',
         display: 'flex',
@@ -1458,7 +1458,7 @@ Follow me for updates on my latest projects and tech insights!`;
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0
+        bottom: isMobile ? 'calc(env(safe-area-inset-bottom, 0px) + 56px)' : '0'
       }}
     >
       <div className="console-header" style={{ 
@@ -1651,8 +1651,8 @@ Follow me for updates on my latest projects and tech insights!`;
 
       <form onSubmit={handleSubmit} style={{ 
         flexShrink: 0,
-        position: isMobile ? 'fixed' : 'relative',
-        bottom: isMobile ? 'calc(env(safe-area-inset-bottom, 0px) + 56px)' : 'auto',
+        position: isMobile ? 'absolute' : 'relative',
+        bottom: isMobile ? '0' : 'auto',
         left: isMobile ? '0' : 'auto',
         right: isMobile ? '0' : 'auto',
         backgroundColor: '#000000',
