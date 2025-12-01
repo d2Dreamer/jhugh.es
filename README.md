@@ -2,7 +2,7 @@
 
 An interactive terminal-style portfolio website built with Next.js, TypeScript, and React. This project transforms a traditional portfolio into a command-line interface experience with a retro-futuristic aesthetic.
 
-**Version**: 1.1.1
+**Version**: 1.1.2
 
 ## Features
 
@@ -20,17 +20,20 @@ An interactive terminal-style portfolio website built with Next.js, TypeScript, 
 ## Available Commands
 
 ### File Operations
+
 - `ls` - List all available files
 - `cat <filename>` - Display file contents
 - `tree` - Show directory structure
 
 ### Navigation
+
 - `pwd` - Show current directory
 - `whoami` - Display current user
 - `date` - Show current date and time
 - `uptime` - Show system uptime
 
 ### Content
+
 - `about` - Show about information
 - `experience` - Show work experience
 - `skills` - Show technical skills
@@ -38,12 +41,14 @@ An interactive terminal-style portfolio website built with Next.js, TypeScript, 
 - `contact` - Show contact details
 
 ### Social Links
+
 - `github` - Open GitHub profile
 - `linkedin` - Open LinkedIn profile
 - `email` - Show email address
 - `resume/cv` - Download resume
 
 ### System
+
 - `version` - Show version information
 - `neofetch` - Display system information
 - `status` - Show portfolio status
@@ -52,17 +57,20 @@ An interactive terminal-style portfolio website built with Next.js, TypeScript, 
 - `help` - Show this help message
 
 ### Fun Commands
+
 - `matrix` - Matrix-style animation effect
 - `hack` - Simulated hacking animation
 
 ## Getting Started
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -105,6 +113,7 @@ To customize the portfolio content, edit the `fileSystem` object in `src/compone
 ## Deployment
 
 The application can be deployed to any platform that supports Next.js:
+
 - Vercel (recommended)
 - Netlify
 - AWS Amplify

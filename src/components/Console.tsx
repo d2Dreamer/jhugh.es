@@ -676,7 +676,7 @@ $ social
 $ status
 $ clear`,
 
-    'README.md': `INTERACTIVE CONSOLE PORTFOLIO v1.1.1
+    'README.md': `INTERACTIVE CONSOLE PORTFOLIO v1.1.2
 ===========================================
 
 Welcome to my terminal-style portfolio! This is an interactive CV website
@@ -728,8 +728,9 @@ Enjoy exploring! 🚀`
   const executeCommand = (input: string, commandsArray: Command[] = []): string => {
     const cmd = input.trim().toLowerCase();
     const parts = input.trim().split(' ');
+    const commandPart = parts[0].toLowerCase(); // Make command case-insensitive
 
-    switch (parts[0]) {
+    switch (commandPart) {
       case 'ls':
         return Object.keys(fileSystem)
           .map(filename => `${getFileIcon(filename)} ${filename}`)
@@ -739,10 +740,11 @@ Enjoy exploring! 🚀`
         if (parts.length > 1 && parts[1]) {
           // Get all parts after 'cat' to handle filenames with spaces
           const filename = parts.slice(1).join(' ');
-          // Check if file exists in fileSystem (case-sensitive)
-          const fileContent = (fileSystem as Record<string, string>)[filename];
-          if (fileContent) {
-            return fileContent;
+          // Case-insensitive lookup for filenames
+          const fileSystemKeys = Object.keys(fileSystem);
+          const matchingKey = fileSystemKeys.find(key => key.toLowerCase() === filename.toLowerCase());
+          if (matchingKey) {
+            return (fileSystem as Record<string, string>)[matchingKey];
           }
           return `cat: ${filename}: No such file or directory`;
         }
@@ -795,7 +797,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.1.1\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.1.2\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -805,7 +807,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `OS: Portfolio Console v1.1.1
+        return `OS: Portfolio Console v1.1.2
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -1582,7 +1584,7 @@ Follow me for updates on my latest projects and tech insights!`;
             opacity: 0.9,
             textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
           }}>
-            INTERACTIVE PORTFOLIO CONSOLE v1.1.1
+            INTERACTIVE PORTFOLIO CONSOLE v1.1.2
           </div>
           <button
             onClick={() => setShowHelpPopup(!showHelpPopup)}
@@ -1903,6 +1905,10 @@ Follow me for updates on my latest projects and tech insights!`;
               value={currentInput}
               onChange={(e) => setCurrentInput(e.target.value)}
               onKeyDown={handleKeyDown}
+              autoCapitalize="off"
+              autoCorrect="off"
+              autoComplete="off"
+              spellCheck="false"
               style={{
                 background: 'rgba(0, 0, 0, 0.8)',
                 border: isMobile ? '1px solid #00ff00' : '2px solid #00ff00',
