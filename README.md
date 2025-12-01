@@ -2,7 +2,7 @@
 
 An interactive terminal-style portfolio website built with Next.js, TypeScript, and React. This project transforms a traditional portfolio into a command-line interface experience with a retro-futuristic aesthetic.
 
-**Version**: 1.1.2
+**Version**: 1.1.3
 
 ## Features
 

@@ -676,7 +676,7 @@ $ social
 $ status
 $ clear`,
 
-    'README.md': `INTERACTIVE CONSOLE PORTFOLIO v1.1.2
+    'README.md': `INTERACTIVE CONSOLE PORTFOLIO v1.1.3
 ===========================================
 
 Welcome to my terminal-style portfolio! This is an interactive CV website
@@ -782,10 +782,10 @@ Enjoy exploring! 🚀`
         return fileSystem['contact.txt'];
       
       case 'resume':
-        return `Opening resume...\n\n📄 Coming soon\n\nAlternatively, use 'cat contact.txt' for contact information.`;
+        return `Opening resume...\n\n📄 Resume available for download:\n🔗 /resume.pdf\n\nClick the link above to view or download the PDF in your browser.\n\nAlternatively, use 'cat contact.txt' for contact information.`;
 
       case 'cv':
-        return `Opening resume...\n\n📄 Coming soon\n\nAlternatively, use 'cat contact.txt' for contact information.`;
+        return `Opening CV...\n\n📄 CV available for download:\n🔗 /resume.pdf\n\nClick the link above to view or download the PDF in your browser.\n\nAlternatively, use 'cat contact.txt' for contact information.`;
       
       case 'github':
         return `Opening GitHub profile...\n\n🔗 https://github.com/d2Dreamer\n\nCheck out my repositories and contributions!`;
@@ -797,7 +797,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.1.2\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.1.3\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -807,7 +807,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `OS: Portfolio Console v1.1.2
+        return `OS: Portfolio Console v1.1.3
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -1242,8 +1242,8 @@ Follow me for updates on my latest projects and tech insights!`;
   };
 
   const renderTextWithLinks = (text: string): React.ReactNode => {
-    // URL regex pattern - matches http, https, and email addresses
-    const urlRegex = /(https?:\/\/[^\s]+|[\w.-]+@[\w.-]+\.\w+)/g;
+    // URL regex pattern - matches http, https, relative paths starting with /, and email addresses
+    const urlRegex = /(https?:\/\/[^\s]+|\/[^\s]+|[\w.-]+@[\w.-]+\.\w+)/g;
     const parts: React.ReactNode[] = [];
     let lastIndex = 0;
     let match;
@@ -1256,6 +1256,7 @@ Follow me for updates on my latest projects and tech insights!`;
 
       const url = match[0];
       const isEmail = url.includes('@');
+      const isRelativePath = url.startsWith('/');
       const href = isEmail ? `mailto:${url}` : url;
 
       // Add clickable link
@@ -1263,8 +1264,8 @@ Follow me for updates on my latest projects and tech insights!`;
         <a
           key={match.index}
           href={href}
-          target={isEmail ? undefined : "_blank"}
-          rel={isEmail ? undefined : "noopener noreferrer"}
+          target={isEmail || isRelativePath ? undefined : "_blank"}
+          rel={isEmail || isRelativePath ? undefined : "noopener noreferrer"}
           style={{
             color: '#00ff00',
             textDecoration: 'underline',
@@ -1584,7 +1585,7 @@ Follow me for updates on my latest projects and tech insights!`;
             opacity: 0.9,
             textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
           }}>
-            INTERACTIVE PORTFOLIO CONSOLE v1.1.2
+            INTERACTIVE PORTFOLIO CONSOLE v1.1.3
           </div>
           <button
             onClick={() => setShowHelpPopup(!showHelpPopup)}
