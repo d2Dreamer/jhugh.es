@@ -234,6 +234,7 @@ const Console: React.FC<ConsoleProps> = ({ initialCommands = [] }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [bottomOffset, setBottomOffset] = useState(80);
   const [formHeight, setFormHeight] = useState(0);
+  const [showHelpPopup, setShowHelpPopup] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -675,7 +676,7 @@ $ social
 $ status
 $ clear`,
 
-    'README.md': `INTERACTIVE CONSOLE PORTFOLIO v1.1.0
+    'README.md': `INTERACTIVE CONSOLE PORTFOLIO v1.1.1
 ===========================================
 
 Welcome to my terminal-style portfolio! This is an interactive CV website
@@ -794,7 +795,7 @@ Enjoy exploring! 🚀`
         return `📧 joe@investinsight.io\n\nFeel free to reach out for opportunities or collaboration!`;
       
       case 'version':
-        return `Console Portfolio v1.1.0\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
+        return `Console Portfolio v1.1.1\nBuilt with Next.js, TypeScript, and React\nLast updated: ${new Date().toLocaleDateString()}`;
       
       case 'uptime':
         const uptime = Date.now() - (window.performance.timing.navigationStart || 0);
@@ -804,7 +805,7 @@ Enjoy exploring! 🚀`
         return `System uptime: ${hours}h ${minutes % 60}m ${seconds % 60}s`;
       
       case 'neofetch':
-        return `OS: Portfolio Console v1.1.0
+        return `OS: Portfolio Console v1.1.1
 Host: d2dreamer-portfolio
 Kernel: Next.js 13.2.4
 Uptime: ${Math.floor((Date.now() - (window.performance.timing.navigationStart || 0)) / 1000)}s
@@ -1382,6 +1383,34 @@ Follow me for updates on my latest projects and tech insights!`;
     return parts.length > 0 ? parts : renderTextWithLinks(text);
   };
 
+  const formatHelpForMobile = (text: string): string => {
+    const lines = text.split('\n');
+    const formattedLines: string[] = [];
+    
+    for (const line of lines) {
+      // Skip empty lines, headers, and separators
+      if (!line.trim() || line.trim().startsWith('=') || line.trim().endsWith(':')) {
+        formattedLines.push(line);
+        continue;
+      }
+      
+      // Check if line matches pattern: "command                    - description"
+      const match = line.match(/^(\S+(?:\s+\S+)*?)\s{2,}-\s+(.+)$/);
+      if (match) {
+        const command = match[1].trim();
+        const description = match[2].trim();
+        // Format as: "command\n  → description" for mobile
+        formattedLines.push(command);
+        formattedLines.push(`  → ${description}`);
+      } else {
+        // Keep original line if it doesn't match the pattern
+        formattedLines.push(line);
+      }
+    }
+    
+    return formattedLines.join('\n');
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [commands, typingCommands]);
@@ -1524,7 +1553,9 @@ Follow me for updates on my latest projects and tech insights!`;
         textShadow: '0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00',
         boxShadow: '0 5px 15px rgba(0, 255, 0, 0.3)',
         flexShrink: 0,
-        paddingTop: '5px'
+        paddingTop: '5px',
+        position: 'relative',
+        zIndex: 10000
       }}>
         <div className="ascii-art" style={{
           fontFamily: 'Press Start 2P, monospace',
@@ -1539,14 +1570,110 @@ Follow me for updates on my latest projects and tech insights!`;
 {`JOSEPH HUGHES - BLOCKCHAIN ENTHUSIAST`}
         </div>
         <div style={{ 
-          fontSize: isMobile ? '6px' : '10px',
-          color: '#00ff00',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           marginTop: isMobile ? '3px' : '10px',
-          opacity: 0.9,
-          textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
+          position: 'relative'
         }}>
-          INTERACTIVE PORTFOLIO CONSOLE v1.1.0
+          <div style={{ 
+            fontSize: isMobile ? '6px' : '10px',
+            color: '#00ff00',
+            opacity: 0.9,
+            textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00'
+          }}>
+            INTERACTIVE PORTFOLIO CONSOLE v1.1.1
+          </div>
+          <button
+            onClick={() => setShowHelpPopup(!showHelpPopup)}
+            style={{
+              background: 'transparent',
+              border: '2px solid #00ff00',
+              color: '#00ff00',
+              fontFamily: 'Press Start 2P, monospace',
+              fontSize: isMobile ? '8px' : '12px',
+              padding: isMobile ? '4px 8px' : '6px 12px',
+              cursor: 'pointer',
+              textShadow: '0 0 5px #00ff00, 0 0 10px #00ff00',
+              boxShadow: '0 0 10px rgba(0, 255, 0, 0.5)',
+              transition: 'all 0.2s ease',
+              position: 'relative',
+              zIndex: 1000
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(0, 255, 0, 0.1)';
+              e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 255, 0, 0.8)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.boxShadow = '0 0 10px rgba(0, 255, 0, 0.5)';
+            }}
+          >
+            ?
+          </button>
         </div>
+        {showHelpPopup && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '100%',
+              right: '0',
+              marginTop: '10px',
+              backgroundColor: '#000000',
+              border: '3px solid #00ff00',
+              padding: isMobile ? '10px' : '15px',
+              maxWidth: isMobile ? '90vw' : '500px',
+              maxHeight: '70vh',
+              overflowY: 'auto',
+              zIndex: 10001,
+              boxShadow: '0 0 20px rgba(0, 255, 0, 0.8), inset 0 0 20px rgba(0, 255, 0, 0.1)',
+              fontFamily: 'Press Start 2P, monospace',
+              fontSize: isMobile ? '8px' : '10px',
+              lineHeight: '1.6',
+              color: '#00ff00',
+              textShadow: '0 0 5px #00ff00'
+            }}
+          >
+            <div style={{ 
+              borderBottom: '2px solid #00ff00', 
+              paddingBottom: '8px', 
+              marginBottom: '10px',
+              fontSize: isMobile ? '9px' : '11px',
+              fontWeight: 'bold'
+            }}>
+              AVAILABLE COMMANDS
+            </div>
+            <div style={{ whiteSpace: 'pre-wrap' }}>
+              {renderTextWithClickableCommands(
+                isMobile ? formatHelpForMobile(fileSystem['help.txt']) : fileSystem['help.txt']
+              )}
+            </div>
+            <button
+              onClick={() => setShowHelpPopup(false)}
+              style={{
+                position: 'absolute',
+                top: '5px',
+                right: '5px',
+                background: 'transparent',
+                border: '1px solid #00ff00',
+                color: '#00ff00',
+                fontFamily: 'Press Start 2P, monospace',
+                fontSize: '8px',
+                padding: '2px 6px',
+                cursor: 'pointer',
+                textShadow: '0 0 5px #00ff00'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(0, 255, 0, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
+            >
+              ✕
+            </button>
+          </div>
+        )}
         <div style={{ 
           fontSize: isMobile ? '5px' : '8px',
           color: '#00ff00',
@@ -1674,6 +1801,24 @@ Follow me for updates on my latest projects and tech insights!`;
                         {lineIndex < lines.length - 1 && '\n'}
                       </React.Fragment>
                     ))}
+                    {command.isTyping && (
+                      <span style={{
+                        animation: 'blink 1s infinite',
+                        color: '#00ff00',
+                        fontWeight: 'bold'
+                      }}>█</span>
+                    )}
+                  </>
+                ) : command.input === 'help' || command.input === 'cat help.txt' ? (
+                  <>
+                    {(isMobile ? formatHelpForMobile(command.output) : command.output)
+                      .split('\n')
+                      .map((line, lineIndex, lines) => (
+                        <React.Fragment key={lineIndex}>
+                          {renderTextWithClickableCommands(line)}
+                          {lineIndex < lines.length - 1 && '\n'}
+                        </React.Fragment>
+                      ))}
                     {command.isTyping && (
                       <span style={{
                         animation: 'blink 1s infinite',
